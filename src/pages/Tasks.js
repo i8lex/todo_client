@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  Typography,
-  Dialog,
-  DialogTitle,
-} from "@mui/material";
+// import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete, Edit } from "@mui/icons-material";
 import { Form, Formik } from "formik";
@@ -58,12 +49,16 @@ export const TasksPage = () => {
 
   console.log(checkedTaks);
   return (
-    <Box sx={{ marginTop: 2 }}>
-      <Container>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
+    <section className="tasks">
+      <div className="container">
+        <div className="tasks__wrapper">
+          <div>
             <Formik
-              initialValues={{ title: "", description: "" }}
+              initialValues={{
+                title: "",
+                description: "",
+                done: false,
+              }}
               onSubmit={async (values, formikHelpers) => {
                 const result = await createTask(values);
                 console.log(result);
@@ -75,91 +70,112 @@ export const TasksPage = () => {
               }}
               validationSchema={form.projectsValidationSchema}
             >
-              <Form>
-                <Stack spacing={2}>
-                  <Typography component="h1" variant="h5" align="center">
-                    Create project
-                  </Typography>
-                  <Input name="title" label="Title" required />
-                  <Input name="description" label="Description" required />
+              <Form className="tasks__form">
+                <h4 className="tasks__create">Create project</h4>
+                <Input name="title" label="Title" required />
+                <Input
+                  name="description"
+                  as="textarea"
+                  label="Description"
+                  required
+                />
 
-                  <Button variant="contained" size="large" type="submit">
-                    Create
-                  </Button>
-                </Stack>
+                <button className="tasks__button" type="submit">
+                  Create
+                </button>
               </Form>
             </Formik>
-          </Grid>
+          </div>
+          <ul className="tasks__list">
+            {projects.map(({ _id, title, description, created, deadline }) => {
+              if (!deadline) {
+                deadline = "Not set";
+              }
+              console.log(deadline);
+              return (
+                <li className="tasks__item">
+                  <h4 className="tasks__item__title">{title}</h4>
+                  <p className="tasks__item__description">{description}</p>
+                  <div className="tasks__item__dateBox">
+                    <div>
+                      <p className="tasks__item__dateText">Created at:</p>
+                      <p className="tasks__item__date">
+                        {format(new Date(created), "yyyy-MM-dd")}
+                      </p>
+                      <p className="tasks__item__date">
+                        {format(new Date(created), "HH:mm:ss")}
+                      </p>
+                    </div>
+                    {!deadline === "Not set" ? (
+                      <div>
+                        <p className="tasks__item__dateText">Deadline at:</p>
+                        <p className="tasks__item__date">
+                          {format(new Date(deadline), "yyyy-MM-dd")}
+                        </p>
+                        <p className="tasks__item__date">
+                          {format(new Date(deadline), "HH:mm:ss")}
+                        </p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="tasks__item__dateText">Deadline at:</p>
+                        <p className="tasks__item__date">{deadline}</p>
+                      </div>
+                    )}
+                  </div>
+                  <div className="task__item__iconBox">
+                    <Edit
+                      onClick={() => {
+                        setEditModal({
+                          isOpen: true,
+                          data: { title },
+                          handleConfirm: async (values, helpers) => {
+                            console.log(values, helpers);
+                            await updateTasks(_id, values);
 
-          {projects.map(({ _id, title, created }) => {
-            return (
-              <Grid
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-                item
-                xs={12}
-                key={_id}
-                // onClick={handle}
-              >
-                <Typography component="h2" variant="h5">
-                  {title}
-                </Typography>
-                <Typography component="p" variant="h5">
-                  {format(new Date(created), "yyyy-MM-dd HH:mm:ss")}
-                </Typography>
-                <Edit
-                  onClick={() => {
-                    setEditModal({
-                      isOpen: true,
-                      data: { title },
-                      handleConfirm: async (values, helpers) => {
-                        console.log(values, helpers);
-                        await updateTasks(_id, values);
+                            setProjects((prevState) => {
+                              return prevState.map((project) => {
+                                if (project._id === _id) {
+                                  return {
+                                    ...project,
+                                    title: values.title,
+                                  };
+                                }
 
-                        setProjects((prevState) => {
-                          return prevState.map((project) => {
-                            if (project._id === _id) {
-                              return {
-                                ...project,
-                                title: values.title,
-                              };
-                            }
-
-                            return project;
-                          });
+                                return project;
+                              });
+                            });
+                            setEditModal((prevState) => ({
+                              ...prevState,
+                              isOpen: false,
+                            }));
+                          },
+                          title: `Update ${title}`,
                         });
-                        setEditModal((prevState) => ({
-                          ...prevState,
-                          isOpen: false,
-                        }));
-                      },
-                      title: `Update ${title}`,
-                    });
-                  }}
-                />
-                <Delete
-                  onClick={() =>
-                    setModal({
-                      isOpen: true,
-                      title: `Are you sure to delete ${title}`,
-                      handleConfirm: async () => {
-                        await deleteTasks(`?ids=${_id}`);
-                        setProjects((prevState) =>
-                          prevState.filter((project) => project._id !== _id)
-                        );
-                      },
-                    })
-                  }
-                />
-                <Checkbox value={_id} onChange={handleCheckboxChange} />
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Container>
+                      }}
+                    />
+                    <Delete
+                      onClick={() =>
+                        setModal({
+                          isOpen: true,
+                          title: `Are you sure to delete ${title}`,
+                          handleConfirm: async () => {
+                            await deleteTasks(`?ids=${_id}`);
+                            setProjects((prevState) =>
+                              prevState.filter((project) => project._id !== _id)
+                            );
+                          },
+                        })
+                      }
+                    />
+                    <Checkbox value={_id} onChange={handleCheckboxChange} />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
       <ModalConfirm
         isOpen={modal.isOpen}
         title={modal.title}
@@ -182,6 +198,6 @@ export const TasksPage = () => {
         }}
         handleConfirm={editModal.handleConfirm}
       />
-    </Box>
+    </section>
   );
 };
