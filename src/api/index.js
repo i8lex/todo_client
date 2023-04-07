@@ -1,5 +1,8 @@
 import axios from "axios";
 
+const authInfo = JSON.parse(localStorage.getItem("authInfo"));
+const { token } = authInfo;
+console.log(token);
 export const httpClient = axios.create({
   baseURL: "http://localhost:3001/api/",
 });
@@ -13,30 +16,86 @@ export const loginUser = async (body) => {
 };
 
 export const getTasks = async () => {
-  console.log(httpClient.defaults.headers);
-  return await httpClient.get("/tasks");
+  return await httpClient
+    .get("/tasks", {
+      headers: {
+        token: token,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const createTask = async (body) => {
-  return await httpClient.post("/tasks", body);
+  console.log(body);
+  return await httpClient
+    .post("/tasks", body, {
+      headers: {
+        token: token,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const deleteTasks = async (id) => {
-  return await httpClient.delete(`/tasks/${id}`);
+  return await httpClient
+    .delete(`/tasks/${id}`, {
+      headers: {
+        token: token,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const updateTasks = async (id, body) => {
-  return await httpClient.put(`/tasks/${id}`, body);
+  return await httpClient
+    .put(`/tasks/${id}`, body, {
+      headers: {
+        token: token,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const uploadImages = async (body) => {
-  return await httpClient.post("/image", body);
+  return await httpClient
+    .post("/image", body, {
+      headers: {
+        token: token,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const deleteImages = async (id) => {
-  return await httpClient.delete(`/image/${id}`);
+  return await httpClient
+    .delete(`/image/${id}`, {
+      headers: {
+        token: token,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const getImages = async (id) => {
-  return await httpClient.get(`/image/${id}`);
+  return await httpClient
+    .get(`/image/${id}`, {
+      headers: {
+        token: token,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
