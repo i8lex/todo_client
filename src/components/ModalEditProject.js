@@ -77,7 +77,6 @@ export const ModalEditProject = ({
   data,
 }) => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [deadline, setDeadline] = useState(data.deadline);
 
   const handleTextClick = () => {
     setIsEditMode(true);
