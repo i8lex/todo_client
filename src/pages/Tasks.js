@@ -106,7 +106,7 @@ export const TasksPage = () => {
                         {format(new Date(created), "HH:mm:ss")}
                       </p>
                     </div>
-                    {!deadline === "Not set" ? (
+                    {deadline !== "Not set" ? (
                       <div>
                         <p className="tasks__item__dateText">Deadline at:</p>
                         <p className="tasks__item__date">
