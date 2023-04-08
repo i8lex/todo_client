@@ -93,7 +93,7 @@ export const TasksPage = () => {
               }
               console.log(deadline);
               return (
-                <li className="tasks__item">
+                <li key={_id} className="tasks__item">
                   <h4 className="tasks__item__title">{title}</h4>
                   <p className="tasks__item__description">{description}</p>
                   <div className="tasks__item__dateBox">
@@ -128,7 +128,7 @@ export const TasksPage = () => {
                       onClick={() => {
                         setEditModal({
                           isOpen: true,
-                          data: { title },
+                          data: { title, description, deadline },
                           handleConfirm: async (values, helpers) => {
                             console.log(values, helpers);
                             await updateTasks(_id, values);
@@ -139,6 +139,8 @@ export const TasksPage = () => {
                                   return {
                                     ...project,
                                     title: values.title,
+                                    description: values.description,
+                                    deadline: values.deadline,
                                   };
                                 }
 

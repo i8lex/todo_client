@@ -1,72 +1,14 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-} from "@mui/material";
-import { Formik, Form } from "formik";
-import { Input } from "./Input";
-import { form } from "../constants/form";
-
-export const ModalEditProject = ({
-  title,
-  isOpen,
-  handleClose,
-  handleConfirm,
-  data,
-}) => {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const handleTextClick = () => {
-    setIsEditMode(true);
-  };
-  return (
-    <Dialog open={isOpen} onClose={handleClose}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Formik
-            validationSchema={form.projectsValidationSchema}
-            initialValues={{ title: data.title, description: data.description }}
-            onSubmit={handleConfirm}
-          >
-            <Form>
-              <DialogContent>
-                {isEditMode ? (
-                  <Input label="Title" name="title" />
-                ) : (
-                  <div onClick={handleTextClick}>{data.title}</div>
-                )}
-                {isEditMode ? (
-                  <Input label="Description" name="description" />
-                ) : (
-                  <div onClick={handleTextClick}>{data.description}</div>
-                )}
-                {isEditMode ? (
-                  <Input label="Deadline" name="deadline" type="Date" />
-                ) : (
-                  <div onClick={handleTextClick}>{data.deadline}</div>
-                )}
-              </DialogContent>
-              <DialogActions>
-                <Button variant="contained" type="submit">
-                  Yes
-                </Button>
-                <Button variant="outlined" onClick={handleClose}>
-                  Cancel
-                </Button>
-              </DialogActions>
-            </Form>
-          </Formik>
-        </Grid>
-      </Grid>
-    </Dialog>
-  );
-};
-
 // import React, { useState } from "react";
-// import { Formik, Form, Field } from "formik";
+// import {
+//   Button,
+//   Dialog,
+//   DialogActions,
+//   DialogContent,
+//   DialogTitle,
+//   Grid,
+// } from "@mui/material";
+// import { Formik, Form } from "formik";
+// import { Input } from "./Input";
 // import { form } from "../constants/form";
 //
 // export const ModalEditProject = ({
@@ -81,68 +23,146 @@ export const ModalEditProject = ({
 //     setIsEditMode(true);
 //   };
 //   return (
-//     <div style={{ display: isOpen ? "block" : "none" }}>
-//       <div style={{ width: "500px", margin: "0 auto" }}>
-//         <Formik
-//           validationSchema={form.projectsValidationSchema}
-//           initialValues={{
-//             title: data.title,
-//             description: data.description,
-//             deadline: data.deadline,
-//           }}
-//           onSubmit={handleConfirm}
-//         >
-//           <Form>
-//             <div style={{ marginBottom: "20px" }}>
-//               <label
-//                 htmlFor="title"
-//                 style={{ display: "block", marginBottom: "5px" }}
-//               >
-//                 Title
-//               </label>
-//               {isEditMode ? (
-//                 <Field type="text" name="title" />
-//               ) : (
-//                 <div onClick={handleTextClick}>{data.title}</div>
-//               )}
-//             </div>
-//             <div style={{ marginBottom: "20px" }}>
-//               <label
-//                 htmlFor="description"
-//                 style={{ display: "block", marginBottom: "5px" }}
-//               >
-//                 Description
-//               </label>
-//               {isEditMode ? (
-//                 <Field type="text" name="description" />
-//               ) : (
-//                 <div onClick={handleTextClick}>{data.description}</div>
-//               )}
-//             </div>
-//             <div style={{ marginBottom: "20px" }}>
-//               <label
-//                 htmlFor="deadline"
-//                 style={{ display: "block", marginBottom: "5px" }}
-//               >
-//                 Deadline
-//               </label>
-//               {isEditMode ? (
-//                 <Field type="date" name="deadline" />
-//               ) : (
-//                 <div onClick={handleTextClick}>{data.deadline}</div>
-//               )}
-//             </div>
-//             <div style={{ textAlign: "right" }}>
-//               <button type="submit" style={{ marginRight: "10px" }}>
-//                 Yes
-//               </button>
-//               <button type="button" onClick={handleClose}>
-//                 Cancel
-//               </button>
-//             </div>
-//           </Form>
-//         </Formik>
-//       </div>
-//     </div>
+//     <Dialog open={isOpen} onClose={handleClose}>
+//       <Grid container spacing={2}>
+//         <Grid item xs={12}>
+//           <Formik
+//             validationSchema={form.projectsValidationSchema}
+//             initialValues={{ title: data.title, description: data.description }}
+//             onSubmit={handleConfirm}
+//           >
+//             <Form>
+//               <DialogContent>
+//                 {isEditMode ? (
+//                   <Input label="Title" name="title" />
+//                 ) : (
+//                   <div onClick={handleTextClick}>{data.title}</div>
+//                 )}
+//                 {isEditMode ? (
+//                   <Input label="Description" name="description" />
+//                 ) : (
+//                   <div onClick={handleTextClick}>{data.description}</div>
+//                 )}
+//                 {isEditMode ? (
+//                   <Input label="Deadline" name="deadline" type="Date" />
+//                 ) : (
+//                   <div onClick={handleTextClick}>{data.deadline}</div>
+//                 )}
+//               </DialogContent>
+//               <DialogActions>
+//                 <Button variant="contained" type="submit">
+//                   Yes
+//                 </Button>
+//                 <Button variant="outlined" onClick={handleClose}>
+//                   Cancel
+//                 </Button>
+//               </DialogActions>
+//             </Form>
+//           </Formik>
+//         </Grid>
+//       </Grid>
+//     </Dialog>
 //   );
 // };
+
+import React, { useState } from "react";
+import Modal from "react-modal";
+import { Formik, Form, Field } from "formik";
+import { form } from "../constants/form";
+
+Modal.setAppElement("#root");
+
+export const ModalEditProject = ({
+  title,
+  isOpen,
+  handleClose,
+  handleConfirm,
+  data,
+}) => {
+  const [isEditMode, setIsEditMode] = useState(false);
+  const handleTextClick = () => {
+    setIsEditMode(true);
+  };
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      contentLabel={title}
+      style={{
+        overlay: {
+          backgroundColor: "rgba(0, 0, 0, 0.6)",
+        },
+        content: {
+          width: "500px",
+          margin: "0 auto",
+          border: "none",
+          borderRadius: "10px",
+          padding: "20px",
+        },
+      }}
+    >
+      <div className="none">1234</div>
+      <div style={{ width: "500px", margin: "0 auto" }}>
+        <Formik
+          validationSchema={form.projectsValidationSchema}
+          initialValues={{
+            title: data.title,
+            description: data.description,
+            deadline: data.deadline,
+          }}
+          onSubmit={handleConfirm}
+        >
+          <Form>
+            <div style={{ marginBottom: "20px" }}>
+              <label
+                htmlFor="title"
+                style={{ display: "block", marginBottom: "5px" }}
+              >
+                Title
+              </label>
+              {isEditMode ? (
+                <Field type="text" name="title" />
+              ) : (
+                <div onClick={handleTextClick}>{data.title}</div>
+              )}
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <label
+                htmlFor="description"
+                style={{ display: "block", marginBottom: "5px" }}
+              >
+                Description
+              </label>
+              {isEditMode ? (
+                <Field type="text" name="description" />
+              ) : (
+                <div onClick={handleTextClick}>{data.description}</div>
+              )}
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <label
+                htmlFor="deadline"
+                style={{ display: "block", marginBottom: "5px" }}
+              >
+                Deadline
+              </label>
+              {isEditMode ? (
+                <Field type="date" name="deadline" />
+              ) : (
+                <div onClick={handleTextClick}>{data.deadline}</div>
+              )}
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <button type="submit" style={{ marginRight: "10px" }}>
+                Yes
+              </button>
+              <button type="button" onClick={handleClose}>
+                Cancel
+              </button>
+            </div>
+          </Form>
+        </Formik>
+      </div>
+    </Modal>
+  );
+};
