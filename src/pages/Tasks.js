@@ -106,22 +106,21 @@ export const TasksPage = () => {
                         {format(new Date(created), "HH:mm:ss")}
                       </p>
                     </div>
-                    {deadline !== "Not set" ? (
-                      <div>
-                        <p className="tasks__item__dateText">Deadline at:</p>
-                        <p className="tasks__item__date">
-                          {format(new Date(deadline), "yyyy-MM-dd")}
-                        </p>
-                        <p className="tasks__item__date">
-                          {format(new Date(deadline), "HH:mm:ss")}
-                        </p>
-                      </div>
-                    ) : (
-                      <div>
-                        <p className="tasks__item__dateText">Deadline at:</p>
+                    <div>
+                      <p className="tasks__item__dateText">Deadline at:</p>
+                      {deadline !== "Not set" ? (
+                        <>
+                          <p className="tasks__item__date">
+                            {format(new Date(deadline), "yyyy-MM-dd")}
+                          </p>
+                          <p className="tasks__item__date">
+                            {format(new Date(deadline), "HH:mm:ss")}
+                          </p>
+                        </>
+                      ) : (
                         <p className="tasks__item__date">{deadline}</p>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                   <div className="task__item__iconBox">
                     <Edit

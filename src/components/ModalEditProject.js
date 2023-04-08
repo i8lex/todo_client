@@ -69,6 +69,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { Formik, Form, Field } from "formik";
 import { form } from "../constants/form";
+import { format } from "date-fns";
 
 Modal.setAppElement("#root");
 
@@ -80,8 +81,11 @@ export const ModalEditProject = ({
   data,
 }) => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const handleTextClick = () => {
+  const handleEditClick = () => {
     setIsEditMode(true);
+  };
+  const handleTextOnBlur = () => {
+    setIsEditMode(false);
   };
   return (
     <Modal
@@ -93,7 +97,8 @@ export const ModalEditProject = ({
           backgroundColor: "rgba(0, 0, 0, 0.6)",
         },
         content: {
-          width: "500px",
+          maxWidth: "500px",
+          maxHeight: "500px",
           margin: "0 auto",
           border: "none",
           borderRadius: "10px",
@@ -101,8 +106,7 @@ export const ModalEditProject = ({
         },
       }}
     >
-      <div className="none">1234</div>
-      <div style={{ width: "500px", margin: "0 auto" }}>
+      <div className="tasks__modalEdit">
         <Formik
           validationSchema={form.projectsValidationSchema}
           initialValues={{
@@ -113,43 +117,84 @@ export const ModalEditProject = ({
           onSubmit={handleConfirm}
         >
           <Form>
-            <div style={{ marginBottom: "20px" }}>
-              <label
-                htmlFor="title"
-                style={{ display: "block", marginBottom: "5px" }}
-              >
-                Title
-              </label>
+            <div className="tasks__form__inputBox">
               {isEditMode ? (
-                <Field type="text" name="title" />
+                <label
+                  className="tasks__form__label"
+                  htmlFor="title"
+                  style={{ display: "block", marginBottom: "5px" }}
+                >
+                  Title
+                </label>
               ) : (
-                <div onClick={handleTextClick}>{data.title}</div>
+                <></>
+              )}
+              {isEditMode ? (
+                <Field
+                  className="tasks__form__input"
+                  onBlur={handleTextOnBlur}
+                  type="text"
+                  name="title"
+                />
+              ) : (
+                <div onClick={handleEditClick}>
+                  <p className="tasks__item__title">{data.title}</p>
+                </div>
               )}
             </div>
-            <div style={{ marginBottom: "20px" }}>
-              <label
-                htmlFor="description"
-                style={{ display: "block", marginBottom: "5px" }}
-              >
-                Description
-              </label>
+            <div className="tasks__form__inputBox">
               {isEditMode ? (
-                <Field type="text" name="description" />
+                <label className="tasks__form__label" htmlFor="description">
+                  Description
+                </label>
               ) : (
-                <div onClick={handleTextClick}>{data.description}</div>
+                <></>
+              )}
+              {isEditMode ? (
+                <Field
+                  onBlur={handleTextOnBlur}
+                  as="textarea"
+                  className="tasks__form__input"
+                  type="text"
+                  name="description"
+                />
+              ) : (
+                <div onClick={handleEditClick}>
+                  <p className="tasks__item__description">{data.description}</p>
+                </div>
               )}
             </div>
-            <div style={{ marginBottom: "20px" }}>
-              <label
-                htmlFor="deadline"
-                style={{ display: "block", marginBottom: "5px" }}
-              >
-                Deadline
-              </label>
+            <div className="tasks__form__inputBox">
               {isEditMode ? (
-                <Field type="date" name="deadline" />
+                <label className="tasks__form__label" htmlFor="deadline">
+                  Deadline
+                </label>
               ) : (
-                <div onClick={handleTextClick}>{data.deadline}</div>
+                <></>
+              )}
+              {isEditMode ? (
+                <Field
+                  onBlur={handleTextOnBlur}
+                  className="tasks__form__input"
+                  type="datetime-local"
+                  name="deadline"
+                />
+              ) : (
+                <div onClick={handleEditClick}>
+                  <p className="tasks__item__dateText">Deadline at:</p>
+                  {data.deadline !== "Not set" ? (
+                    <>
+                      <p className="tasks__item__date">
+                        {format(new Date(data.deadline), "yyyy-MM-dd")}
+                      </p>
+                      <p className="tasks__item__date">
+                        {format(new Date(data.deadline), "HH:mm:ss")}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="tasks__item__date">{data.deadline}</p>
+                  )}
+                </div>
               )}
             </div>
             <div style={{ textAlign: "right" }}>
