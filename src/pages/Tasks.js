@@ -17,6 +17,7 @@ import { ModalConfirm } from "../components/ModalConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
 import moment from "moment";
+import { Timer } from "../components/timer";
 
 export const TasksPage = () => {
   const [checkedTaks, setCheckedTasks] = useState([]);
@@ -121,6 +122,7 @@ export const TasksPage = () => {
                         <p className="tasks__item__date">{deadline}</p>
                       )}
                     </div>
+                    <Timer deadline={deadline} />
                   </div>
                   <div className="task__item__iconBox">
                     <Edit
