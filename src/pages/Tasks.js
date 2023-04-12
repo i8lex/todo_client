@@ -16,7 +16,7 @@ import {
 import { ModalConfirm } from "../components/ModalConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
-import { format } from "date-fns";
+import moment from "moment";
 
 export const TasksPage = () => {
   const [checkedTaks, setCheckedTasks] = useState([]);
@@ -100,10 +100,10 @@ export const TasksPage = () => {
                     <div>
                       <p className="tasks__item__dateText">Created at:</p>
                       <p className="tasks__item__date">
-                        {format(new Date(created), "yyyy-MM-dd")}
+                        {moment(created).format("YYYY-MM-DD")}
                       </p>
                       <p className="tasks__item__date">
-                        {format(new Date(created), "HH:mm:ss")}
+                        {moment(created).format("HH:mm:ss")}
                       </p>
                     </div>
                     <div>
@@ -111,10 +111,10 @@ export const TasksPage = () => {
                       {deadline !== "Not set" ? (
                         <>
                           <p className="tasks__item__date">
-                            {format(new Date(deadline), "yyyy-MM-dd")}
+                            {moment(deadline).format("YYYY-MM-DD")}
                           </p>
                           <p className="tasks__item__date">
-                            {format(new Date(deadline), "HH:mm:ss")}
+                            {moment(deadline).format("HH:mm:ss")}
                           </p>
                         </>
                       ) : (

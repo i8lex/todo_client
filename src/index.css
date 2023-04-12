@@ -129,6 +129,9 @@
   font-size: 16px;
   line-height: 22px;
 }
+.tasks__modalEdit {
+  max-height: 300px;
+}
 
 body {
   width: 100vw;
