@@ -129,6 +129,18 @@
   font-size: 16px;
   line-height: 22px;
 }
+.tasks__item__timeUp {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  color: #cb0000;
+}
+.tasks__item__iconBox {
+  display: flex;
+  align-items: center;
+}
 .tasks__modalEdit {
   max-height: 300px;
 }

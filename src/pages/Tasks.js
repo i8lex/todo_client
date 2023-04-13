@@ -101,7 +101,7 @@ export const TasksPage = () => {
                     <div>
                       <p className="tasks__item__dateText">Created at:</p>
                       <p className="tasks__item__date">
-                        {moment(created).format("YYYY-MM-DD")}
+                        {moment(created).format("D MMM YYYY")}
                       </p>
                       <p className="tasks__item__date">
                         {moment(created).format("HH:mm:ss")}
@@ -112,7 +112,7 @@ export const TasksPage = () => {
                       {deadline !== "Not set" ? (
                         <>
                           <p className="tasks__item__date">
-                            {moment(deadline).format("YYYY-MM-DD")}
+                            {moment(deadline).format("D MMM YYYY")}
                           </p>
                           <p className="tasks__item__date">
                             {moment(deadline).format("HH:mm:ss")}
@@ -124,7 +124,7 @@ export const TasksPage = () => {
                     </div>
                     <Timer deadline={deadline} />
                   </div>
-                  <div className="task__item__iconBox">
+                  <div className="tasks__item__iconBox">
                     <Edit
                       onClick={() => {
                         setEditModal({
