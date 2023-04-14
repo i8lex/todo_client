@@ -1,5 +1,5 @@
-import { useContext, useEffect } from 'react';
-import { StorageContext } from './index';
+import { useContext, useEffect } from "react";
+import { StorageContext } from "./index";
 
 export const useAuth = () => {
   const {
@@ -10,7 +10,7 @@ export const useAuth = () => {
   } = useContext(StorageContext);
 
   useEffect(() => {
-    localStorage.authInfo = JSON.stringify(authInfo);
+    sessionStorage.authInfo = JSON.stringify(authInfo);
   }, [authInfo]);
 
   return {

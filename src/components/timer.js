@@ -5,7 +5,6 @@ export const Timer = ({ deadline }) => {
   const [remainingTime, setRemainingTime] = useState(0);
 
   useEffect(() => {
-    // console.log(remainingTime.years());
     if (deadline) {
       const intervalId = setInterval(() => {
         const remainingTimeInMs = moment(deadline).diff(moment());

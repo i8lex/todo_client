@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -8,11 +8,12 @@ import {
   Typography,
   Modal,
 } from "@mui/material";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import * as yup from "yup";
-
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../providers/Storage/authSlice";
 import { Input } from "../components/Input";
-import { httpClient, loginUser } from "../api";
+import { loginUser } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/Storage/auth.hooks";
 
@@ -20,6 +21,7 @@ export const LoginPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { saveAuthInfo } = useAuth();
 
   const handleClose = () => {
@@ -73,12 +75,14 @@ export const LoginPage = () => {
               onSubmit={async (values, formikHelpers) => {
                 try {
                   const { data } = await loginUser(values);
-                  const { message } = data;
+                  const { message, token } = data;
                   setMessage(message);
 
                   if (message.includes("Welcome")) {
                     setOpenModal(true);
                     saveAuthInfo(data);
+                    dispatch(loginSuccess(token));
+                    sessionStorage.setItem("token", token);
 
                     setTimeout(() => navigate("/tasks"), 3000);
                   } else {
@@ -87,7 +91,6 @@ export const LoginPage = () => {
                   }
 
                   formikHelpers.resetForm();
-                  // navigate("/tasks");
                 } catch (err) {
                   const {
                     response: { data },

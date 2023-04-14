@@ -6,7 +6,9 @@ StorageContext.displayName = "Storage";
 
 export const StorageProvider = ({ children }) => {
   const [storage, setStorage] = useState({
-    authInfo: localStorage.authInfo ? JSON.parse(localStorage.authInfo) : {},
+    authInfo: sessionStorage.authInfo
+      ? JSON.parse(sessionStorage.authInfo)
+      : {},
   });
 
   const value = {

@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from "react";
-// import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete, Edit } from "@mui/icons-material";
 import { Form, Formik } from "formik";
 import { Input } from "../components/Input";
-import {
-  getTasks,
-  createTask,
-  updateTasks,
-  deleteTasks,
-  getImages,
-  deleteImages,
-  uploadImages,
-} from "../api/index";
+import { useTasks } from "../api/index";
 import { ModalConfirm } from "../components/ModalConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
@@ -20,6 +11,7 @@ import moment from "moment";
 import { Timer } from "../components/timer";
 
 export const TasksPage = () => {
+  const { getTasks, deleteTasks, updateTasks, createTask } = useTasks();
   const [checkedTaks, setCheckedTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [modal, setModal] = useState({ isOpen: false, title: "" });
@@ -29,7 +21,14 @@ export const TasksPage = () => {
     data: {},
     handleConfirm: () => {},
   });
-  // const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { data } = await getTasks();
+  //     setProjects(data);
+  //   };
+  //   fetchData();
+  // });
 
   useEffect(() => {
     getTasks().then(({ data }) => {

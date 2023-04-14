@@ -16,7 +16,6 @@ export const Input = ({
   const inputClassName = !isErrorShown
     ? "tasks__form__input"
     : "tasks__form__inputError";
-  console.log(value);
   return (
     <div className="tasks__form__inputBox">
       <Field
