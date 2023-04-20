@@ -6,10 +6,9 @@ export const Timer = ({ deadline }) => {
 
   useEffect(() => {
     if (deadline) {
+      const deadlineFormatted = moment(deadline, "YYYY-MM-DDTHH:mm");
       const intervalId = setInterval(() => {
-        const remainingTimeInMs = moment(deadline, moment.ISO_8601).diff(
-          moment()
-        );
+        const remainingTimeInMs = deadlineFormatted.diff(moment());
         if (remainingTimeInMs < 0) {
           clearInterval(intervalId);
           setRemainingTime(0);
