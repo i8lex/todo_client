@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete, Edit } from "@mui/icons-material";
 import { Form, Formik } from "formik";
 import { Input } from "../components/Input";
-import { useTasks } from "../api/index";
+import {
+  useGetTasksQuery,
+  useAddTaskMutation,
+  useDeleteTaskMutation,
+  usePathTaskMutation,
+} from "../providers/redux/tasks/tasksApi";
 import { ModalConfirm } from "../components/ModalConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
@@ -11,9 +16,12 @@ import moment from "moment";
 import { Timer } from "../components/timer";
 
 export const TasksPage = () => {
-  const { getTasks, deleteTasks, updateTasks, createTask } = useTasks();
-  const [checkedTaks, setCheckedTasks] = useState([]);
-  const [projects, setProjects] = useState([]);
+  const { data = [], isLoading } = useGetTasksQuery();
+  const [addTask] = useAddTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
+  const [pathTask] = usePathTaskMutation();
+
+  const [checkedTasks, setCheckedTasks] = useState([]);
   const [modal, setModal] = useState({ isOpen: false, title: "" });
   const [editModal, setEditModal] = useState({
     isOpen: false,
@@ -22,32 +30,20 @@ export const TasksPage = () => {
     handleConfirm: () => {},
   });
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const { data } = await getTasks();
-  //     setProjects(data);
-  //   };
-  //   fetchData();
-  // });
-
-  useEffect(() => {
-    getTasks().then(({ data }) => {
-      setProjects(data);
-    });
-  }, []);
-
   const handleCheckboxChange = (event) => {
     const itemId = event.target.value;
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      setCheckedTasks([...checkedTaks, itemId]);
+      setCheckedTasks([...checkedTasks, itemId]);
     } else {
-      setCheckedTasks(checkedTaks.filter((id) => id !== itemId));
+      setCheckedTasks(checkedTasks.filter((id) => id !== itemId));
     }
   };
 
-  console.log(checkedTaks);
+  if (isLoading) {
+    return <h1>...LOADING...</h1>;
+  }
   return (
     <section className="tasks">
       <div className="container">
@@ -60,11 +56,7 @@ export const TasksPage = () => {
                 done: false,
               }}
               onSubmit={async (values, formikHelpers) => {
-                const result = await createTask(values);
-                console.log(result);
-                setProjects((prevState) => {
-                  return [...prevState, result.data.newTask];
-                });
+                await addTask(values).unwrap();
 
                 formikHelpers.resetForm();
               }}
@@ -87,11 +79,10 @@ export const TasksPage = () => {
             </Formik>
           </div>
           <ul className="tasks__list">
-            {projects.map(({ _id, title, description, created, deadline }) => {
+            {data.map(({ _id, title, description, created, deadline }) => {
               if (!deadline) {
                 deadline = "Not set";
               }
-              console.log(deadline);
               return (
                 <li key={_id} className="tasks__item">
                   <h4 className="tasks__item__title">{title}</h4>
@@ -129,43 +120,30 @@ export const TasksPage = () => {
                         setEditModal({
                           isOpen: true,
                           data: { title, description, deadline },
-                          handleConfirm: async (values, helpers) => {
-                            console.log(values, helpers);
-                            await updateTasks(_id, values);
+                          handleConfirm: async (values) => {
+                            try {
+                              await pathTask({ id: _id, body: values });
 
-                            setProjects((prevState) => {
-                              return prevState.map((project) => {
-                                if (project._id === _id) {
-                                  return {
-                                    ...project,
-                                    title: values.title,
-                                    description: values.description,
-                                    deadline: values.deadline,
-                                  };
-                                }
-
-                                return project;
-                              });
-                            });
-                            setEditModal((prevState) => ({
-                              ...prevState,
-                              isOpen: false,
-                            }));
+                              setEditModal((prevState) => ({
+                                ...prevState,
+                                isOpen: false,
+                              }));
+                            } catch (error) {
+                              // Здесь можно обработать ошибку выполнения мутации
+                            }
                           },
                           title: `Update ${title}`,
                         });
                       }}
                     />
+
                     <Delete
                       onClick={() =>
                         setModal({
                           isOpen: true,
                           title: `Are you sure to delete ${title}`,
                           handleConfirm: async () => {
-                            await deleteTasks(`?ids=${_id}`);
-                            setProjects((prevState) =>
-                              prevState.filter((project) => project._id !== _id)
-                            );
+                            await deleteTask(`?ids=${_id}`);
                           },
                         })
                       }

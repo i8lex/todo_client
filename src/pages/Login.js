@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -8,10 +8,9 @@ import {
   Typography,
   Modal,
 } from "@mui/material";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import * as yup from "yup";
 import { Input } from "../components/Input";
-import { httpClient, loginUser } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../providers/redux/auth/authSlice";
@@ -22,21 +21,13 @@ export const LoginPage = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login, { isError }] = useLoginMutation();
+  const [login] = useLoginMutation();
+
   const handleClose = () => {
     setOpenModal(false);
   };
 
   const handleSubmit = async (values, formikHelpers) => {
-    // login(values) // Вызов мутации useLoginMutation с передачей formData
-    //   .then((result) => {
-    //     // Обработка успешного ответа
-    //     console.log("Успешный ответ:", result.data); // Обработка данных из ответа
-    //   })
-    //   .catch((error) => {
-    //     // Обработка ошибки
-    //     console.error("Ошибка:", error);
-    //   });
     try {
       const { data } = await login(values);
       if (data) {
@@ -48,6 +39,7 @@ export const LoginPage = () => {
 
         setTimeout(() => navigate("/tasks"), 3000);
       } else {
+        setMessage(message);
         setOpenModal(true);
 
         setTimeout(handleClose, 3000);
@@ -107,9 +99,7 @@ export const LoginPage = () => {
           <Grid item xs={6}>
             <Formik
               initialValues={{ email: "", password: "" }}
-              onSubmit={async (values, formikHelpers) =>
-                await handleSubmit(values, formikHelpers)
-              }
+              onSubmit={(values) => handleSubmit(values)}
               validationSchema={yup.object().shape({
                 email: yup
                   .string()

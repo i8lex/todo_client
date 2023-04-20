@@ -7,7 +7,9 @@ export const Timer = ({ deadline }) => {
   useEffect(() => {
     if (deadline) {
       const intervalId = setInterval(() => {
-        const remainingTimeInMs = moment(deadline).diff(moment());
+        const remainingTimeInMs = moment(deadline, moment.ISO_8601).diff(
+          moment()
+        );
         if (remainingTimeInMs < 0) {
           clearInterval(intervalId);
           setRemainingTime(0);
