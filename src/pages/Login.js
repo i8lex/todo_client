@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -8,24 +8,59 @@ import {
   Typography,
   Modal,
 } from "@mui/material";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "../providers/Storage/authSlice";
 import { Input } from "../components/Input";
-import { loginUser } from "../api";
+import { httpClient, loginUser } from "../api";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../providers/Storage/auth.hooks";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../providers/redux/auth/authSlice";
+import { useLoginMutation } from "../providers/redux/auth/authApi";
 
 export const LoginPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { saveAuthInfo } = useAuth();
-
+  const [login, { isError }] = useLoginMutation();
   const handleClose = () => {
     setOpenModal(false);
+  };
+
+  const handleSubmit = async (values, formikHelpers) => {
+    // login(values) // Вызов мутации useLoginMutation с передачей formData
+    //   .then((result) => {
+    //     // Обработка успешного ответа
+    //     console.log("Успешный ответ:", result.data); // Обработка данных из ответа
+    //   })
+    //   .catch((error) => {
+    //     // Обработка ошибки
+    //     console.error("Ошибка:", error);
+    //   });
+    try {
+      const { data } = await login(values);
+      if (data) {
+        const { message, token } = data;
+        setMessage(message);
+
+        setOpenModal(true);
+        dispatch(loginSuccess(token));
+
+        setTimeout(() => navigate("/tasks"), 3000);
+      } else {
+        setOpenModal(true);
+
+        setTimeout(handleClose, 3000);
+      }
+
+      formikHelpers.resetForm();
+    } catch (err) {
+      const {
+        response: { data },
+      } = err;
+
+      formikHelpers.setFieldError(data.field, data.message);
+    }
   };
 
   return (
@@ -72,33 +107,9 @@ export const LoginPage = () => {
           <Grid item xs={6}>
             <Formik
               initialValues={{ email: "", password: "" }}
-              onSubmit={async (values, formikHelpers) => {
-                try {
-                  const { data } = await loginUser(values);
-                  const { message, token } = data;
-                  setMessage(message);
-
-                  if (message.includes("Welcome")) {
-                    setOpenModal(true);
-                    saveAuthInfo(data);
-                    dispatch(loginSuccess(token));
-                    sessionStorage.setItem("token", token);
-
-                    setTimeout(() => navigate("/tasks"), 3000);
-                  } else {
-                    setOpenModal(true);
-                    setTimeout(handleClose, 3000);
-                  }
-
-                  formikHelpers.resetForm();
-                } catch (err) {
-                  const {
-                    response: { data },
-                  } = err;
-
-                  formikHelpers.setFieldError(data.field, data.message);
-                }
-              }}
+              onSubmit={async (values, formikHelpers) =>
+                await handleSubmit(values, formikHelpers)
+              }
               validationSchema={yup.object().shape({
                 email: yup
                   .string()
@@ -134,34 +145,3 @@ export const LoginPage = () => {
     </Box>
   );
 };
-
-// <Formik
-//     initialValues={{ email: "", password: "" }}
-//     onSubmit={async (values, formikHelpers) => {
-//       try {
-//         const { data } = await loginUser(values);
-//         console.log(data);
-//         saveAuthInfo(data);
-//
-//         formikHelpers.resetForm();
-//         navigate("/tasks");
-//       } catch (err) {
-//         const {
-//           response: { data },
-//         } = err;
-//
-//         formikHelpers.setFieldError(data.field, data.message);
-//       }
-//     }}
-//     validationSchema={yup.object().shape({
-//       email: yup.string().label("Email").min(6).email().max(30).required(),
-//       password: yup.string().label("Password").min(8).max(30).required(),
-//     })}
-// >
-//   <Form autoComplete="off">
-//     <h1>Login</h1>
-//     <Field label="Email" required name="email" />
-//     <Field label="Password" type="password" name="password" />
-//     <button type="submit">Login</button>
-//   </Form>
-// </Formik>
