@@ -2,6 +2,10 @@
 @import "stylesheet/mixins";
 @import "stylesheet/login";
 @import "stylesheet/tasks";
+@font-face {
+  font-family: DS-Digital;
+  src: url(./stylesheet/fonts/clock/DS-DIGIB.TTF);
+}
 
 body {
   width:100vw;

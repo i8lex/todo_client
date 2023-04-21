@@ -21,30 +21,30 @@ export const LoginPage = () => {
   };
 
   const handleSubmit = async (values, formikHelpers) => {
+    const { data } = await login(values);
     try {
-      const { data } = await login(values);
-      if (data) {
+      if (data.token) {
         const { message, token } = data;
         setMessage(message);
 
         setOpenModal(true);
         dispatch(loginSuccess(token));
 
-        setTimeout(() => navigate("/tasks"), 3000);
+        return setTimeout(() => navigate("/tasks"), 3000);
       } else {
+        const { message } = data;
         setMessage(message);
         setOpenModal(true);
-
         setTimeout(handleClose, 3000);
+        return formikHelpers.resetForm();
       }
-
-      formikHelpers.resetForm();
     } catch (err) {
-      const {
-        response: { data },
-      } = err;
+      const { message } = data;
 
-      formikHelpers.setFieldError(data.field, data.message);
+      setMessage(message);
+      setOpenModal(true);
+
+      setTimeout(handleClose, 3000);
     }
   };
 

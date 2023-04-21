@@ -196,6 +196,16 @@
   font-size: 16px;
   line-height: 22px;
 }
+.tasks__item__clock {
+  text-align: center;
+  padding: 4px;
+  border: 1px black solid;
+  border-radius: 3px;
+  font-family: "DS-Digital", sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  line-height: 22px;
+}
 .tasks__item__timeUp {
   font-family: "Roboto", sans-serif;
   font-weight: 700;
@@ -211,7 +221,21 @@
 .tasks__modalEdit {
   max-height: 300px;
 }
+.tasks__modalEdit__title {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 95px;
+  letter-spacing: 0;
+  color: #2A2A2A;
+  margin-bottom: 15px;
+}
 
+@font-face {
+  font-family: DS-Digital;
+  src: url(./stylesheet/fonts/clock/DS-DIGIB.TTF);
+}
 body {
   width: 100vw;
   display: flex;

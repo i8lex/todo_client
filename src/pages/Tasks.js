@@ -13,6 +13,7 @@ import { ModalConfirm } from "../components/ModalConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
 import moment from "moment";
+import { format, parseISO } from "date-fns";
 import { Timer } from "../components/Timer";
 
 export const TasksPage = () => {
@@ -91,10 +92,10 @@ export const TasksPage = () => {
                     <div>
                       <p className="tasks__item__dateText">Created at:</p>
                       <p className="tasks__item__date">
-                        {moment(created).format("D MMM YYYY")}
+                        {format(parseISO(created), "d MMM yyyy")}
                       </p>
                       <p className="tasks__item__date">
-                        {moment(created).format("HH:mm:ss")}
+                        {format(parseISO(created), "HH:mm:ss")}
                       </p>
                     </div>
                     <div>
@@ -102,10 +103,10 @@ export const TasksPage = () => {
                       {deadline !== "Not set" ? (
                         <>
                           <p className="tasks__item__date">
-                            {moment(deadline).format("D MMM YYYY")}
+                            {format(parseISO(deadline), "d MMM yyyy")}
                           </p>
                           <p className="tasks__item__date">
-                            {moment(deadline).format("HH:mm:ss")}
+                            {format(parseISO(deadline), "HH:mm:ss")}
                           </p>
                         </>
                       ) : (
@@ -128,9 +129,7 @@ export const TasksPage = () => {
                                 ...prevState,
                                 isOpen: false,
                               }));
-                            } catch (error) {
-                              // Здесь можно обработать ошибку выполнения мутации
-                            }
+                            } catch (error) {}
                           },
                           title: `Update ${title}`,
                         });

@@ -1,7 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import { form } from "../constants/form";
+import { Input } from "./Input";
 
 Modal.setAppElement("#root");
 
@@ -30,7 +31,7 @@ export const ModalEditProject = ({
         },
         content: {
           maxWidth: "500px",
-          maxHeight: "300px",
+          maxHeight: "500px",
           margin: "0 auto",
           border: "none",
           borderRadius: "10px",
@@ -39,6 +40,7 @@ export const ModalEditProject = ({
       }}
     >
       <div className="tasks__modalEdit">
+        <h4 className="tasks__modalEdit__title">{title}</h4>
         <Formik
           validationSchema={form.projectsValidationSchema}
           initialValues={{
@@ -49,48 +51,14 @@ export const ModalEditProject = ({
           onSubmit={handleConfirm}
         >
           <Form>
-            <div className="tasks__form__inputBox">
-              <label
-                className="tasks__form__label"
-                htmlFor="title"
-                style={{ display: "block", marginBottom: "5px" }}
-              >
-                Title
-              </label>
-
-              <Field
-                className="tasks__form__input"
-                // onBlur={handleTextOnBlur}
-                type="text"
-                name="title"
-              />
-            </div>
-            <div className="tasks__form__inputBox">
-              <label className="tasks__form__label" htmlFor="description">
-                Description
-              </label>
-
-              <Field
-                // onBlur={handleTextOnBlur}
-                as="textarea"
-                className="tasks__form__input"
-                type="text"
-                name="description"
-              />
-            </div>
-            <div className="tasks__form__inputBox">
-              <label className="tasks__form__label" htmlFor="deadline">
-                Deadline
-              </label>
-
-              <Field
-                // onBlur={handleTextOnBlur}
-                className="tasks__form__input"
-                type="datetime-local"
-                name="deadline"
-                default={data.deadline}
-              />
-            </div>
+            <Input label="Title" required name="title" />
+            <Input label="Description" as="textarea" name="description" />
+            <Input
+              label="Deadline"
+              type="datetime-local"
+              step="1"
+              name="deadline"
+            />
             <div style={{ textAlign: "right" }}>
               <button type="submit" className="tasks__button">
                 Yes

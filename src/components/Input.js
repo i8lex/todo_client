@@ -8,6 +8,8 @@ export const Input = ({
   label = "",
   required = false,
   type = "text",
+  step,
+  defaultValue,
 }) => {
   const [{ onChange, onBlur, value }, { touched, error }] = useField(name);
   const isErrorShown = touched && !!error;
@@ -48,6 +50,8 @@ export const Input = ({
         onBlur={onBlur}
         value={value}
         name={name}
+        step={step}
+        defaultValue={defaultValue}
       />
       {label && (
         <label className={labelClassName} htmlFor={name}>

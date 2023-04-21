@@ -1,8 +1,15 @@
 @import "mixins";
+//@font-face {
+//  font-family: 'DS-Digital';
+//  src: local('DS-Digital');
+//}
+
+
 
 
 .tasks {
   margin-top: 50px;
+
   //max-width: 1800px;
 
   &__wrapper {
@@ -141,6 +148,18 @@
       font-size: 16px;
       line-height: 22px;
     }
+    &__clock {
+      text-align: center;
+      padding: 4px;
+      border: 1px black solid;
+      border-radius: 3px;
+      font-family: 'DS-Digital', sans-serif;
+      font-size: 20px;
+      letter-spacing: 1px;
+
+      line-height: 22px;
+
+    }
 
     &__timeUp {
       font-family: 'Roboto', sans-serif;
@@ -159,6 +178,11 @@
 
   &__modalEdit {
     max-height: 300px;
+
+    &__title {
+      @include title;
+      margin-bottom: 15px;
+    }
   }
 
 }
