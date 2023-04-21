@@ -13,7 +13,7 @@ import { ModalConfirm } from "../components/ModalConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
 import moment from "moment";
-import { Timer } from "../components/timer";
+import { Timer } from "../components/Timer";
 
 export const TasksPage = () => {
   const { data = [], isLoading } = useGetTasksQuery();

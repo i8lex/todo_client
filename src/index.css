@@ -54,15 +54,30 @@
 }
 .tasks__form__label, .tasks__form__labelError {
   position: absolute;
-  top: -7px;
-  left: 3px;
+  top: 45%;
+  left: 10%;
+  transition: top 0.2s ease-in-out, left 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transform: translate(0%, -50%) scale(1.3);
   background-color: #ffffff;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.5);
 }
 .tasks__form__labelError {
+  transition: top 0.2s ease-in-out;
+  top: 40%;
   color: rgb(255, 0, 0);
+}
+.tasks__form__labelErrorMove {
+  top: -7px;
+  left: 3px;
+  transform: translate(0%, 0%) scale(1);
+}
+.tasks__form__labelMove {
+  top: -7px;
+  left: 3px;
+  transform: translate(0%, 0%) scale(1);
+  transition: top 0.2s ease-in-out, left 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
 .tasks__button {
   padding: 9px 30px;

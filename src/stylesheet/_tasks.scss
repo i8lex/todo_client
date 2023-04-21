@@ -59,15 +59,30 @@
     &__label,
     &__labelError{
       position: absolute;
-      top: -7px;
-      left: 3px;
+      top: 45%;
+      left: 10%;
+      transition:top 0.2s ease-in-out, left 0.2s ease-in-out, transform 0.2s ease-in-out;
+      transform: translate(0%, -50%) scale(1.3);
       background-color: #ffffff;
       font-family: 'Roboto', sans-serif;
       font-size: 14px;
       color: rgba(0, 0, 0, 0.5);
     }
     &__labelError {
+      transition:top 0.2s ease-in-out;
+      top: 40%;
       color: rgba(255, 0, 0, 1);
+    }
+    &__labelErrorMove {
+      top: -7px;
+      left: 3px;
+      transform: translate(0%, -0%) scale(1);
+    }
+    &__labelMove {
+      top: -7px;
+      left: 3px;
+      transform: translate(0%, -0%) scale(1);
+      transition:top 0.2s ease-in-out, left 0.2s ease-in-out, transform 0.2s ease-in-out;
     }
   }
 
