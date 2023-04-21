@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  Typography,
-  Modal,
-} from "@mui/material";
+
 import { Form, Formik } from "formik";
+import { ModalLogin } from "../components/ModalLogin";
 import * as yup from "yup";
 import { Input } from "../components/Input";
 import { useNavigate } from "react-router-dom";
@@ -56,82 +49,45 @@ export const LoginPage = () => {
   };
 
   return (
-    <Box sx={{ marginTop: 2 }}>
-      <Container>
-        <Modal
-          open={openModal}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100vh",
-              backgroundColor: "rgba(241,241,241,0.5)",
-              color: "#323232",
-              textAlign: "center",
-            }}
+    <section className="login">
+      <div className="container">
+        <div className="login__wrapper">
+          <ModalLogin
+            open={openModal}
+            onClose={handleClose}
+            message={message}
+          />
+
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            onSubmit={(values) => handleSubmit(values)}
+            validationSchema={yup.object().shape({
+              email: yup
+                .string()
+                .label("Email")
+                .min(6)
+                .email()
+                .max(30)
+                .required(),
+              password: yup
+                .string()
+                .label("Password")
+                .min(8)
+                .max(30)
+                .required(),
+            })}
           >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(255,255,255,0.6)",
-                borderRadius: "10px",
-                width: "80%",
-                height: "30%",
-                fontSize: "24px",
-                textAlign: "center",
-              }}
-            >
-              <Typography id="modal-modal-title" variant="h2" component="h2">
-                {JSON.stringify(message, null, 2).replace(/["']/g, "")}
-              </Typography>{" "}
-            </Box>
-          </Box>
-        </Modal>
-        <Grid container spacing={1}>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={6}>
-            <Formik
-              initialValues={{ email: "", password: "" }}
-              onSubmit={(values) => handleSubmit(values)}
-              validationSchema={yup.object().shape({
-                email: yup
-                  .string()
-                  .label("Email")
-                  .min(6)
-                  .email()
-                  .max(30)
-                  .required(),
-                password: yup
-                  .string()
-                  .label("Password")
-                  .min(8)
-                  .max(30)
-                  .required(),
-              })}
-            >
-              <Form autoComplete="off">
-                <Stack spacing={2}>
-                  <Typography component="h1" align="center" variant="h3">
-                    Login
-                  </Typography>
-                  <Input label="Email" required name="email" />
-                  <Input label="Password" type="password" name="password" />
-                  <Button type="submit" variant="contained" size="large">
-                    Login
-                  </Button>
-                </Stack>
-              </Form>
-            </Formik>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+            <Form autoComplete="off">
+              <h1 className="login__title">Login</h1>
+              <Input label="Email" required name="email" />
+              <Input label="Password" type="password" name="password" />
+              <button className="login__button" type="submit">
+                Login
+              </button>
+            </Form>
+          </Formik>
+        </div>
+      </div>
+    </section>
   );
 };
