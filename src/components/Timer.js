@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { formatDistanceToNowStrict, parseISO } from "date-fns";
-import moment from "moment";
+import {
+  formatDistanceToNowStrict,
+  parseISO,
+  differenceInMilliseconds,
+} from "date-fns";
+// import moment from "moment";
 
 export const Timer = ({ deadline }) => {
   const [remainingTime, setRemainingTime] = useState(null);
@@ -15,11 +19,10 @@ export const Timer = ({ deadline }) => {
 
   useEffect(() => {
     if (deadline !== "Not set") {
-      const deadlineMoment = moment(deadline); // Создаем момент-объект из даты
-      const deadlineMs = deadlineMoment.valueOf(); // Получаем дату в миллисекундах
+      const deadlineDate = new Date(deadline);
       const intervalId = setInterval(() => {
-        const nowMs = moment().valueOf(); // Получаем текущий момент времени в миллисекундах
-        const remainingTimeInMs = deadlineMs - nowMs; // Рассчитываем оставшееся время в миллисекундах
+        const now = new Date();
+        const remainingTimeInMs = differenceInMilliseconds(deadlineDate, now);
         if (remainingTimeInMs < 0) {
           clearInterval(intervalId);
           setRemainingTimeClock(0);

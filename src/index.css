@@ -146,6 +146,7 @@
   letter-spacing: 0;
   color: #2A2A2A;
   cursor: pointer;
+  margin-left: 10px;
 }
 .tasks__list {
   display: grid;
@@ -229,6 +230,7 @@
   line-height: 95px;
   letter-spacing: 0;
   color: #2A2A2A;
+  text-align: center;
   margin-bottom: 15px;
 }
 

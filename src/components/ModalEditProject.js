@@ -52,7 +52,11 @@ export const ModalEditProject = ({
         >
           <Form>
             <Input label="Title" required name="title" />
-            <Input label="Description" as="textarea" name="description" />
+            <Input
+              label="Description"
+              // as="textarea"
+              name="description"
+            />
             <Input
               label="Deadline"
               type="datetime-local"
