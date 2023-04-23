@@ -31,8 +31,14 @@ export const LoginPage = () => {
         dispatch(loginSuccess(data.token));
         setTimeout(() => navigate("/tasks"), 3000);
         formikHelpers.resetForm();
-        return setTimeout(() => setMessage(""), 3000);
+        setTimeout(() => setMessage(""), 3000);
       }
+
+      setTimeout(() => {
+        handleClose();
+        setMessage("");
+      }, 3000);
+
       // else {
       //   const { message } = data;
       //   setMessage(message);
