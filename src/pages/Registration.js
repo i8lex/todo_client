@@ -6,44 +6,41 @@ import { Input } from "../components/Input";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../providers/redux/auth/authSlice";
-import { useLoginMutation } from "../providers/redux/auth/authApi";
+import { useRegistrationMutation } from "../providers/redux/auth/authApi";
 
-export const LoginPage = () => {
+export const RegistrationPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login] = useLoginMutation();
+  const [registration] = useRegistrationMutation();
 
   const handleClose = () => {
     setOpenModal(false);
   };
 
   const handleSubmit = async (values, formikHelpers) => {
+    const { data } = await registration(values);
+    console.log(data);
     try {
-      const { data } = await login(values);
-      const { message } = data;
-      setMessage(message);
-      setOpenModal(true);
       if (data.token) {
-        // setMessage(message);
-        // setOpenModal(true);
-        dispatch(loginSuccess(data.token));
-        setTimeout(() => navigate("/tasks"), 3000);
-        formikHelpers.resetForm();
-        return setTimeout(() => setMessage(""), 3000);
+        const { message, token } = data;
+        setMessage(message);
+
+        setOpenModal(true);
+
+        return setTimeout(() => navigate("/tasks"), 3000);
+      } else {
+        const { message } = data;
+        setMessage(message);
+        setOpenModal(true);
+        setTimeout(handleClose, 3000);
+        return formikHelpers.resetForm();
       }
-      // else {
-      //   const { message } = data;
-      //   setMessage(message);
-      //   setOpenModal(true);
-      //   setTimeout(handleClose, 3000);
-      //   return formikHelpers.resetForm();
-      // }
     } catch (err) {
-      // const { message } = data;
-      console.log(err.message);
-      // setMessage(err.message);
+      const { message } = data;
+
+      setMessage(message);
       setOpenModal(true);
 
       setTimeout(handleClose, 3000);
@@ -61,9 +58,10 @@ export const LoginPage = () => {
           />
 
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ name: "", email: "", password: "" }}
             onSubmit={(values) => handleSubmit(values)}
             validationSchema={yup.object().shape({
+              name: yup.string().label("Email").min(6).max(30).required(),
               email: yup
                 .string()
                 .label("Email")
@@ -80,7 +78,8 @@ export const LoginPage = () => {
             })}
           >
             <Form autoComplete="off">
-              <h1 className="login__title">Login</h1>
+              <h1 className="login__title">Registraion</h1>
+              <Input label="Name" required name="name" />
               <Input label="Email" required name="email" />
               <Input label="Password" type="password" name="password" />
               <button
@@ -88,7 +87,7 @@ export const LoginPage = () => {
                 type="submit"
                 onClick={handleSubmit}
               >
-                Login
+                Registration
               </button>
             </Form>
           </Formik>
