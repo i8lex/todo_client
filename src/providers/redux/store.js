@@ -1,13 +1,3 @@
-// import { configureStore } from "@reduxjs/toolkit";
-// import authReducer from "./auth/authSlice";
-//
-// const store = configureStore({
-//   reducer: {
-//     auth: authReducer,
-//   },
-// });
-// export default store;
-
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import {

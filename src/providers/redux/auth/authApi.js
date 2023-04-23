@@ -19,7 +19,22 @@ export const authApi = createApi({
         body,
       }),
     }),
+    emailRepeat: build.mutation({
+      query: (body) => ({
+        url: "/email",
+        method: "PUT",
+        body,
+      }),
+    }),
+    emailConfirm: build.query({
+      query: (confirmId) => `/email/?confirm=${confirmId}`,
+    }),
   }),
 });
 
-export const { useRegistrationMutation, useLoginMutation } = authApi;
+export const {
+  useRegistrationMutation,
+  useLoginMutation,
+  useEmailRepeatMutation,
+  useEmailConfirmQuery,
+} = authApi;

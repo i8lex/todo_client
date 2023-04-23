@@ -1,18 +1,15 @@
 import React, { useState } from "react";
 import { Form, Formik } from "formik";
-import { ModalLogin } from "../components/ModalLogin";
+import { ModalAuth } from "../components/ModalAuth";
 import * as yup from "yup";
 import { Input } from "../components/Input";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "../providers/redux/auth/authSlice";
 import { useRegistrationMutation } from "../providers/redux/auth/authApi";
 
 export const RegistrationPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [registration] = useRegistrationMutation();
 
   const handleClose = () => {
@@ -24,7 +21,7 @@ export const RegistrationPage = () => {
     console.log(data);
     try {
       if (data.token) {
-        const { message, token } = data;
+        const { message } = data;
         setMessage(message);
 
         setOpenModal(true);
@@ -51,17 +48,13 @@ export const RegistrationPage = () => {
     <section className="login">
       <div className="container">
         <div className="login__wrapper">
-          <ModalLogin
-            open={openModal}
-            onClose={handleClose}
-            message={message}
-          />
+          <ModalAuth open={openModal} onClose={handleClose} message={message} />
 
           <Formik
             initialValues={{ name: "", email: "", password: "" }}
             onSubmit={(values) => handleSubmit(values)}
             validationSchema={yup.object().shape({
-              name: yup.string().label("Email").min(6).max(30).required(),
+              name: yup.string().label("Name").min(6).max(30).required(),
               email: yup
                 .string()
                 .label("Email")
@@ -85,7 +78,7 @@ export const RegistrationPage = () => {
               <button
                 className="login__button"
                 type="submit"
-                onClick={handleSubmit}
+                onSubmit={handleSubmit}
               >
                 Registration
               </button>
