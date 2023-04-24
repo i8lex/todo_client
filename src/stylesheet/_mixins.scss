@@ -18,6 +18,25 @@ $line-height: 30px;
   letter-spacing: 0;
   color: #2A2A2A;
 }
+@mixin titleModal {
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 3rem;
+  letter-spacing: 0;
+  color: #2A2A2A;
+}
+
+@mixin link {
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: #2A2A2A;
+}
 
 @mixin button-order {
   padding: 9px 30px;
@@ -31,6 +50,22 @@ $line-height: 30px;
   font-style: normal;
   font-weight: bold;
   font-size: 18px;
+  letter-spacing: 0;
+  color: #2A2A2A;
+  cursor: pointer;
+}
+@mixin button-email {
+  padding: 9px 30px;
+  max-width: 25rem;
+  width: 100%;
+  background: rgba(136, 214, 245, 0.5);
+  border: 1px rgba(136, 214, 245, 0.8) solid;
+  border-radius: 6px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1rem;
   letter-spacing: 0;
   color: #2A2A2A;
   cursor: pointer;

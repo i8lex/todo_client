@@ -17,30 +17,32 @@ export const RegistrationPage = () => {
   };
 
   const handleSubmit = async (values, formikHelpers) => {
-    const { data } = await registration(values);
-    console.log(data);
+    // console.log(data);
+    // console.log(error.data.error);
     try {
-      if (data.token) {
-        const { message } = data;
+      const { data, error } = await registration(values);
+      const { error: message } = error.data;
+      if (error) {
         setMessage(message);
 
         setOpenModal(true);
 
-        return setTimeout(() => navigate("/tasks"), 3000);
+        return setTimeout(() => handleClose(), 3000);
       } else {
         const { message } = data;
         setMessage(message);
+
         setOpenModal(true);
-        setTimeout(handleClose, 3000);
-        return formikHelpers.resetForm();
+
+        return setTimeout(() => navigate("/login"), 3000);
       }
-    } catch (err) {
-      const { message } = data;
+    } catch (error) {
+      console.log(error);
 
-      setMessage(message);
-      setOpenModal(true);
+      // setMessage(message);
+      // setOpenModal(true);
 
-      setTimeout(handleClose, 3000);
+      // setTimeout(handleClose, 3000);
     }
   };
 

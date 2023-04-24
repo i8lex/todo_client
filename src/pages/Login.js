@@ -6,16 +6,13 @@ import { Input } from "../components/Input";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../providers/redux/auth/authSlice";
-
 import { useLoginMutation } from "../providers/redux/auth/authApi";
 
 export const LoginPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
-
   const [confirmed, setConfirmed] = useState("");
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
@@ -26,37 +23,38 @@ export const LoginPage = () => {
   };
 
   const handleSubmit = async (values, formikHelpers) => {
-    console.log(message);
     try {
-      const { data } = await login(values);
-      const { message, confirmed } = data;
-      console.log(data);
-      setMessage(message);
-      setConfirmed(confirmed);
-      console.log(values);
-      if (confirmed === false) {
-        setEmail(values.email);
-      }
-      setOpenModal(true);
+      const { data, error } = await login(values);
 
-      if (data.token && confirmed === true) {
-        // setMessage(message);
-        // setOpenModal(true);
-        dispatch(loginSuccess(data.token));
-        setTimeout(() => {
-          navigate("/tasks");
-          handleClose();
-        }, 3000);
+      if (error) {
+        setMessage(error.data.error);
+        const { confirmed } = error.data;
+        setConfirmed(confirmed);
+        if (!confirmed && confirmed !== undefined) {
+          setEmail(values.email);
+          return setOpenModal(true);
+        } else {
+          setOpenModal(true);
+          setTimeout(() => handleClose(), 3000);
+        }
+      } else {
+        const { message, confirmed } = data;
+        setMessage(message);
+        setConfirmed(confirmed);
+        setOpenModal(true);
+
+        if (data.token && confirmed === true) {
+          dispatch(loginSuccess(data.token));
+          setTimeout(() => {
+            navigate("/tasks");
+            handleClose();
+          }, 3000);
+        }
       }
     } catch (err) {
-      // const { message } = data;
       console.log(err);
       setMessage(err.message);
       setOpenModal(true);
-
-      setTimeout(() => {
-        handleClose();
-      }, 3000);
     }
   };
 
@@ -65,6 +63,7 @@ export const LoginPage = () => {
       <div className="container">
         <div className="login__wrapper">
           <ModalAuth
+            className="login__modalAuth"
             email={email}
             open={openModal}
             onClose={handleClose}
@@ -96,11 +95,7 @@ export const LoginPage = () => {
               <h1 className="login__title">Login</h1>
               <Input label="Email" required name="email" />
               <Input label="Password" type="password" name="password" />
-              <button
-                className="login__button"
-                type="submit"
-                onClick={handleSubmit}
-              >
+              <button className="login__button" type="submit">
                 Login
               </button>
             </Form>

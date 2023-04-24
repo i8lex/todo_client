@@ -1,5 +1,5 @@
 @import "mixins";
-
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 .login {
   margin-top: 50%;
@@ -23,6 +23,31 @@
 
   &__modal {
     position: relative;
+    @include flex-column-center;
+    gap: 4rem;
+
+    &__close {
+      align-self: flex-end;
+      position: relative;
+      background: none;
+      border: none;
+      &::after {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        cursor: pointer;
+        content: "\e8c6";
+        font-family: "Material Icons";
+        font-size: 20px;
+        text-align: left;
+        &:hover {
+          z-index: 3;
+          transform: scale(1.1);
+          transition: transform  200ms ease-in-out;
+        }
+      }
+    }
 
     &__title {
       //position: absolute;
@@ -31,7 +56,20 @@
       //top: 50%;
       //left: 50%;
       //transform: translateX(-50%);
-      @include title;
+      @include titleModal;
+    }
+    &__button {
+      position: relative;
+      @include button-email;
+      &::before {
+        position: absolute;
+        left: 1rem;
+        content: "\e163";
+        font-family: "Material Icons";
+        font-size: 20px;
+        text-align: left;
+
+      }
     }
   }
 }

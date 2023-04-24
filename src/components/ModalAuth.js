@@ -9,10 +9,9 @@ export const ModalAuth = ({ email, open, handleClose, message, confirmed }) => {
   const [emailRepeat] = useEmailRepeatMutation();
   const repeatEmailHandler = async () => {
     try {
-      const value = new Object({ email: email });
+      const value = { email: email };
       console.log(value);
-      const { data } = await emailRepeat(value);
-      const { message } = data;
+      await emailRepeat(value);
       handleClose();
     } catch (err) {
       console.log(err);
@@ -30,7 +29,7 @@ export const ModalAuth = ({ email, open, handleClose, message, confirmed }) => {
           backgroundColor: "rgba(0, 0, 0, 0.6)",
         },
         content: {
-          maxWidth: "500px",
+          maxWidth: "600px",
           maxHeight: "300px",
           margin: "0 auto",
           border: "none",
@@ -45,14 +44,14 @@ export const ModalAuth = ({ email, open, handleClose, message, confirmed }) => {
           type="button"
           onClick={handleClose}
         >
-          X
+          <></>
         </button>
-        <h1 className="login__modal__title" id="modal-modal-title">
+        <h1 className="login__modal__title">
           {JSON.stringify(message, null, 2).replace(/["']/g, "")}
         </h1>
         {confirmed === false ? (
           <button className="login__modal__button" onClick={repeatEmailHandler}>
-            Confirm email again
+            RESEND CONFIRMATION EMAIL
           </button>
         ) : (
           <></>
