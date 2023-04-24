@@ -3,7 +3,7 @@ import { Field, useField } from "formik";
 
 export const Input = ({
   name,
-
+  id,
   as = "input",
   label = "",
   required = false,
@@ -39,9 +39,11 @@ export const Input = ({
   const inputClassName = !isErrorShown
     ? "tasks__form__input"
     : "tasks__form__inputError";
+
   return (
     <div className="tasks__form__inputBox">
       <Field
+        id={id}
         className={inputClassName}
         as={as}
         required={required}
@@ -58,7 +60,9 @@ export const Input = ({
           {label}
         </label>
       )}
-      {isErrorShown && <div className="tasks__form__error">{error}</div>}
+      <div className="task__form__errorBox">
+        {isErrorShown && <div className="tasks__form__error">{error}</div>}
+      </div>
     </div>
   );
 };

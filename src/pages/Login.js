@@ -9,6 +9,7 @@ import { loginSuccess } from "../providers/redux/auth/authSlice";
 import { useLoginMutation } from "../providers/redux/auth/authApi";
 
 export const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
@@ -57,7 +58,9 @@ export const LoginPage = () => {
       setOpenModal(true);
     }
   };
-
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <section className="login">
       <div className="container">
@@ -94,7 +97,24 @@ export const LoginPage = () => {
             <Form autoComplete="off">
               <h1 className="login__title">Login</h1>
               <Input label="Email" required name="email" />
-              <Input label="Password" type="password" name="password" />
+              <div className="login__passwordBox">
+                <Input
+                  label="Password"
+                  name="password"
+                  type={!showPassword ? "password" : "text"}
+                />
+                <button
+                  onClick={toggleShowPassword}
+                  type="button"
+                  className={
+                    !showPassword
+                      ? "login__passwordBox__btnShow"
+                      : "login__passwordBox__btnHide"
+                  }
+                >
+                  <></>
+                </button>
+              </div>
               <button className="login__button" type="submit">
                 Login
               </button>

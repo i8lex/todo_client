@@ -72,11 +72,16 @@ export const Timer = ({ deadline }) => {
               {remainingTime <= 0 ? (
                 <p className="tasks__item__timeUp">TIME IS UP!!!</p>
               ) : (
-                <p className="tasks__item__clock">{` ${hours}${animation}${minutes
-                  .toString()
-                  .padStart(2, "0")}${animation}${seconds
-                  .toString()
-                  .padStart(2, "0")}`}</p>
+                <div className="tasks__item__clockBox">
+                  <p className="tasks__item__clock">{` ${hours
+                    .toString()
+                    .padStart(2, "\u2007\u2007")}${animation}${minutes
+                    .toString()
+                    .padStart(2, "0")}${animation}${seconds
+                    .toString()
+                    .padStart(2, "0")}`}</p>
+                  <p className="tasks__item__clockBcg">88:88:88</p>
+                </div>
               )}
             </>
           )}

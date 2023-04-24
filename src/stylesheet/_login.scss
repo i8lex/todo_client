@@ -21,6 +21,38 @@
 
   }
 
+  &__passwordBox {
+    position: relative;
+
+    &__btnShow,
+    &__btnHide {
+      right: 2.5rem;
+      top: 45%;
+      transform: translateY(-50%);
+      position: absolute;
+      background: none;
+      border: none;
+
+      &::after {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        cursor: pointer;
+        content: "\e8f4";
+        font-family: "Material Icons";
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 20px;
+        text-align: left;
+      }
+    }
+    &__btnHide {
+      &::after {
+        content: "\e8f5";
+      }
+    }
+  }
+
   &__modal {
     position: relative;
     @include flex-column-center;
