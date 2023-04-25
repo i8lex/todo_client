@@ -9,9 +9,10 @@ import {
   useDeleteTaskMutation,
   usePathTaskMutation,
 } from "../providers/redux/tasks/tasksApi";
-import { ModalConfirm } from "../components/ModalConfirm";
+import { ModalDeleteConfirm } from "../components/ModalDeleteConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
+// import { Checkbox } from "../components/Checkbox";
 // import moment from "moment";
 import { format, parseISO } from "date-fns";
 import { Timer } from "../components/Timer";
@@ -40,6 +41,7 @@ export const TasksPage = () => {
     } else {
       setCheckedTasks(checkedTasks.filter((id) => id !== itemId));
     }
+    console.log(checkedTasks);
   };
 
   if (isLoading) {
@@ -116,7 +118,8 @@ export const TasksPage = () => {
                     <Timer deadline={deadline} />
                   </div>
                   <div className="tasks__item__iconBox">
-                    <Edit
+                    <button
+                      className="tasks__modalEdit__iconBtn"
                       onClick={() => {
                         setEditModal({
                           isOpen: true,
@@ -134,19 +137,31 @@ export const TasksPage = () => {
                           title: `Update ${title}`,
                         });
                       }}
-                    />
+                    >
+                      <></>
+                    </button>
 
-                    <Delete
+                    <button
+                      className="tasks__delete__button"
+                      type="button"
                       onClick={() =>
                         setModal({
                           isOpen: true,
-                          title: `Are you sure to delete ${title}`,
+                          title: title,
                           handleConfirm: async () => {
                             await deleteTask(`?ids=${_id}`);
                           },
                         })
                       }
-                    />
+                    >
+                      <></>
+                    </button>
+                    {/*<input*/}
+                    {/*  type="checkbox"*/}
+                    {/*  value={_id}*/}
+                    {/*  checked={_id}*/}
+                    {/*  onChange={handleCheckboxChange}*/}
+                    {/*/>*/}
                     <Checkbox value={_id} onChange={handleCheckboxChange} />
                   </div>
                 </li>
@@ -155,7 +170,7 @@ export const TasksPage = () => {
           </ul>
         </div>
       </div>
-      <ModalConfirm
+      <ModalDeleteConfirm
         isOpen={modal.isOpen}
         title={modal.title}
         handleClose={() => {

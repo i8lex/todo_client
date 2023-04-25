@@ -11,8 +11,8 @@
 body {
   width:100vw;
   @include flex-column-center;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  //overflow-x: hidden;
+  //-webkit-overflow-scrolling: touch;
 }
 
 .container {
