@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Checkbox from "@mui/material/Checkbox";
+// import Checkbox from "@mui/material/Checkbox";
 import { Delete, Edit } from "@mui/icons-material";
 import { Form, Formik } from "formik";
 import { Input } from "../components/Input";
@@ -12,7 +12,7 @@ import {
 import { ModalDeleteConfirm } from "../components/ModalDeleteConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
-// import { Checkbox } from "../components/Checkbox";
+import Checkbox from "../components/Checkbox";
 // import moment from "moment";
 import { format, parseISO } from "date-fns";
 import { Timer } from "../components/Timer";
@@ -23,7 +23,6 @@ export const TasksPage = () => {
   const [deleteTask] = useDeleteTaskMutation();
   const [pathTask] = usePathTaskMutation();
 
-  const [checkedTasks, setCheckedTasks] = useState([]);
   const [modal, setModal] = useState({ isOpen: false, title: "" });
   const [editModal, setEditModal] = useState({
     isOpen: false,
@@ -31,18 +30,6 @@ export const TasksPage = () => {
     data: {},
     handleConfirm: () => {},
   });
-
-  const handleCheckboxChange = (event) => {
-    const itemId = event.target.value;
-    const isChecked = event.target.checked;
-
-    if (isChecked) {
-      setCheckedTasks([...checkedTasks, itemId]);
-    } else {
-      setCheckedTasks(checkedTasks.filter((id) => id !== itemId));
-    }
-    console.log(checkedTasks);
-  };
 
   if (isLoading) {
     return <h1>...LOADING...</h1>;
@@ -156,13 +143,8 @@ export const TasksPage = () => {
                     >
                       <></>
                     </button>
-                    {/*<input*/}
-                    {/*  type="checkbox"*/}
-                    {/*  value={_id}*/}
-                    {/*  checked={_id}*/}
-                    {/*  onChange={handleCheckboxChange}*/}
-                    {/*/>*/}
-                    <Checkbox value={_id} onChange={handleCheckboxChange} />
+
+                    <Checkbox taskId={_id} />
                   </div>
                 </li>
               );
