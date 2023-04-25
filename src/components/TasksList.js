@@ -1,8 +1,4 @@
 import React from "react";
-import {
-  useDeleteTaskMutation,
-  usePathTaskMutation,
-} from "../providers/redux/tasks/tasksApi";
 import { format, parseISO } from "date-fns";
 import { Timer } from "./Timer";
 import Checkbox from "./Checkbox";
@@ -15,10 +11,9 @@ export const TasksList = ({
   deadline,
   setDeleteConfirmModal,
   setEditModal,
+  deleteTask,
+  pathTask,
 }) => {
-  const [deleteTask] = useDeleteTaskMutation();
-  const [pathTask] = usePathTaskMutation();
-
   return (
     <li className="tasks__item">
       <h4 className="tasks__item__title">{title}</h4>

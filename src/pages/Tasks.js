@@ -4,6 +4,8 @@ import { Input } from "../components/Input";
 import {
   useGetTasksQuery,
   useAddTaskMutation,
+  useDeleteTaskMutation,
+  usePathTaskMutation,
 } from "../providers/redux/tasks/tasksApi";
 import { ModalDeleteConfirm } from "../components/ModalDeleteConfirm";
 import { form } from "../constants/form";
@@ -13,6 +15,8 @@ import { TasksList } from "../components/TasksList";
 export const TasksPage = () => {
   const { data = [], isLoading } = useGetTasksQuery();
   const [addTask] = useAddTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
+  const [pathTask] = usePathTaskMutation();
   const [deleteConfirmModal, setDeleteConfirmModal] = useState({
     isOpen: false,
     title: "",
@@ -77,6 +81,8 @@ export const TasksPage = () => {
                   title={title}
                   setDeleteConfirmModal={setDeleteConfirmModal}
                   setEditModal={setEditModal}
+                  deleteTask={deleteTask}
+                  pathTask={pathTask}
                 />
               );
             })}
