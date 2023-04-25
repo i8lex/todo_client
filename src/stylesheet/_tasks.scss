@@ -197,6 +197,24 @@
       gap: 10px;
     }
   }
+
+  &__checkBox {
+    padding: 16px;
+    font-size: 1.6rem;
+    @include icon-button;
+    &::after {
+      content: "\e835";
+    }
+  }
+  &__checkBoxChecked {
+    padding: 16px;
+    font-size: 1.6rem;
+    @include icon-button;
+    &::after {
+      content: "\e834";
+    }
+  }
+
   &__delete {
     @include flex-column-center;
     gap: 85px;

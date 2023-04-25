@@ -307,6 +307,56 @@
   align-self: flex-end;
   gap: 10px;
 }
+.tasks__checkBox {
+  padding: 16px;
+  font-size: 1.6rem;
+  position: relative;
+  padding: 18px;
+  background: none;
+  border: none;
+}
+.tasks__checkBox::after {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  cursor: pointer;
+  font-family: "Material Icons";
+  text-align: left;
+}
+.tasks__checkBox::after:hover {
+  z-index: 3;
+  transform: scale(1.1);
+  transition: transform 200ms ease-in-out;
+}
+.tasks__checkBox::after {
+  content: "\e835";
+}
+.tasks__checkBoxChecked {
+  padding: 16px;
+  font-size: 1.6rem;
+  position: relative;
+  padding: 18px;
+  background: none;
+  border: none;
+}
+.tasks__checkBoxChecked::after {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  cursor: pointer;
+  font-family: "Material Icons";
+  text-align: left;
+}
+.tasks__checkBoxChecked::after:hover {
+  z-index: 3;
+  transform: scale(1.1);
+  transition: transform 200ms ease-in-out;
+}
+.tasks__checkBoxChecked::after {
+  content: "\e834";
+}
 .tasks__delete {
   display: flex;
   flex-direction: column;

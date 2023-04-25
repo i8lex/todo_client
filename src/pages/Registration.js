@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useRegistrationMutation } from "../providers/redux/auth/authApi";
 
 export const RegistrationPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -38,14 +39,11 @@ export const RegistrationPage = () => {
       }
     } catch (error) {
       console.log(error);
-
-      // setMessage(message);
-      // setOpenModal(true);
-
-      // setTimeout(handleClose, 3000);
     }
   };
-
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <section className="login">
       <div className="container">
@@ -53,7 +51,12 @@ export const RegistrationPage = () => {
           <ModalAuth open={openModal} onClose={handleClose} message={message} />
 
           <Formik
-            initialValues={{ name: "", email: "", password: "" }}
+            initialValues={{
+              name: "",
+              email: "",
+              password: "",
+              passwordConfirm: "",
+            }}
             onSubmit={(values) => handleSubmit(values)}
             validationSchema={yup.object().shape({
               name: yup.string().label("Name").min(6).max(30).required(),
@@ -69,14 +72,55 @@ export const RegistrationPage = () => {
                 .label("Password")
                 .min(8)
                 .max(30)
+                // .oneOf([yup.ref("passwordConfirm")], "Passwords must match")
                 .required(),
+              passwordConfirm: yup
+                .string()
+                .label("Confirm Password")
+                .oneOf([yup.ref("password")], "Passwords must match")
+                .required("Confirm Password is required"),
             })}
           >
             <Form autoComplete="off">
               <h1 className="login__title">Registraion</h1>
               <Input label="Name" required name="name" />
               <Input label="Email" required name="email" />
-              <Input label="Password" type="password" name="password" />
+              <div className="login__passwordBox">
+                <Input
+                  label="Password"
+                  name="password"
+                  type={!showPassword ? "password" : "text"}
+                />
+                <button
+                  onClick={toggleShowPassword}
+                  type="button"
+                  className={
+                    !showPassword
+                      ? "login__passwordBox__btnShow"
+                      : "login__passwordBox__btnHide"
+                  }
+                >
+                  <></>
+                </button>
+              </div>
+              <div className="login__passwordBox">
+                <Input
+                  label="Confirm password"
+                  name="passwordConfirm"
+                  type={!showPassword ? "password" : "text"}
+                />
+                <button
+                  onClick={toggleShowPassword}
+                  type="button"
+                  className={
+                    !showPassword
+                      ? "login__passwordBox__btnShow"
+                      : "login__passwordBox__btnHide"
+                  }
+                >
+                  <></>
+                </button>
+              </div>
               <button
                 className="login__button"
                 type="submit"
