@@ -78,7 +78,7 @@ export const TasksPage = () => {
                   setDeleteConfirmModal={setDeleteConfirmModal}
                   setEditModal={setEditModal}
                 />
-                );
+              );
             })}
           </ul>
         </div>
