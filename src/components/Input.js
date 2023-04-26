@@ -14,8 +14,20 @@ export const Input = ({
   const [{ onChange, onBlur, value }, { touched, error }] = useField(name);
   const isErrorShown = touched && !!error;
   const [labelClassName, setLabelClassName] = useState("tasks__form__label");
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
+
+    if (!value && isInputFocused) {
+      if (!isErrorShown) {
+        return setLabelClassName("tasks__form__label tasks__form__labelMove");
+      }
+      if (isErrorShown) {
+        return setLabelClassName(
+          "tasks__form__labelError tasks__form__labelErrorMove"
+        );
+      }
+    }
     if (!value) {
       if (!isErrorShown) {
         return setLabelClassName("tasks__form__label");
@@ -34,8 +46,10 @@ export const Input = ({
         );
       }
     }
-  }, [value, isErrorShown]);
-
+  }, [value, isErrorShown, isInputFocused]);
+  const handleInputFocus = () => {
+    setIsInputFocused(!isInputFocused);
+  };
   const inputClassName = !isErrorShown
     ? "tasks__form__input"
     : "tasks__form__inputError";
@@ -49,7 +63,11 @@ export const Input = ({
         required={required}
         type={type}
         onChange={onChange}
-        onBlur={onBlur}
+        onBlur={(event) => {
+          handleInputFocus();
+          onBlur(event);
+        }}
+        onFocus={handleInputFocus}
         value={value}
         name={name}
         step={step}
