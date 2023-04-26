@@ -17,7 +17,6 @@ export const Input = ({
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
-
     if (!value && isInputFocused) {
       if (!isErrorShown) {
         return setLabelClassName("tasks__form__label tasks__form__labelMove");
