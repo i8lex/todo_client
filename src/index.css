@@ -174,6 +174,7 @@
   width: 100%;
   height: auto;
   overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0);
   background-position: 19px center;
   background-repeat: no-repeat;
   border: 1px solid rgba(0, 0, 0, 0.5);
@@ -199,6 +200,7 @@
   font-size: 1rem;
   text-shadow: 0.5px 0 0 #969696, 1px 1px 1px #aba8a8, 2px 31px 16px rgba(206, 89, 55, 0);
   color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
 }
 .tasks__form__labelError {
   color: rgb(255, 0, 0);
@@ -209,6 +211,7 @@
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 40%, rgb(255, 255, 255) 45%, rgb(255, 255, 255) 50%, rgb(255, 255, 255) 55%, rgba(255, 255, 255, 0) 60%);
   transform: translate(0%, 0%) scale(0.8);
   transition: top 0.2s ease-in-out, left 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 1;
 }
 .tasks__button {
   padding: 9px 30px;
