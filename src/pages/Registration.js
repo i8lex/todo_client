@@ -4,58 +4,41 @@ import { ModalAuth } from "../components/ModalAuth";
 import * as yup from "yup";
 import { Input } from "../components/Input";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "../providers/redux/auth/authSlice";
-import { useLoginMutation } from "../providers/redux/auth/authApi";
+import { useRegistrationMutation } from "../providers/redux/auth/authApi";
 
-export const LoginPage = () => {
+export const RegistrationPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
-  const [email, setEmail] = useState("");
-  const [confirmed, setConfirmed] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [login] = useLoginMutation();
+  const [registration] = useRegistrationMutation();
 
   const handleClose = () => {
     setOpenModal(false);
-    setMessage("");
   };
 
   const handleSubmit = async (values, formikHelpers) => {
+    // console.log(data);
+    // console.log(error.data.error);
     try {
-      const { data, error } = await login(values);
-
+      const { data, error } = await registration(values);
+      const { error: message } = error.data;
       if (error) {
-        setMessage(error.data.error);
-        const { confirmed } = error.data;
-        setConfirmed(confirmed);
-        if (!confirmed && confirmed !== undefined) {
-          setEmail(values.email);
-          return setOpenModal(true);
-        } else {
-          setOpenModal(true);
-          setTimeout(() => handleClose(), 3000);
-        }
-      } else {
-        const { message, confirmed } = data;
         setMessage(message);
-        setConfirmed(confirmed);
+
         setOpenModal(true);
 
-        if (data.token && confirmed === true) {
-          dispatch(loginSuccess(data.token));
-          setTimeout(() => {
-            navigate("/tasks");
-            handleClose();
-          }, 3000);
-        }
+        return setTimeout(() => handleClose(), 3000);
+      } else {
+        const { message } = data;
+        setMessage(message);
+
+        setOpenModal(true);
+
+        return setTimeout(() => navigate("/login"), 3000);
       }
-    } catch (err) {
-      console.log(err);
-      setMessage(err.message);
-      setOpenModal(true);
+    } catch (error) {
+      console.log(error);
     }
   };
   const toggleShowPassword = () => {
@@ -65,20 +48,18 @@ export const LoginPage = () => {
     <section className="login">
       <div className="container">
         <div className="login__wrapper">
-          <ModalAuth
-            className="login__modalAuth"
-            email={email}
-            open={openModal}
-            onClose={handleClose}
-            handleClose={handleClose}
-            confirmed={confirmed}
-            message={message}
-          />
+          <ModalAuth open={openModal} onClose={handleClose} message={message} />
 
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{
+              name: "",
+              email: "",
+              password: "",
+              passwordConfirm: "",
+            }}
             onSubmit={(values) => handleSubmit(values)}
             validationSchema={yup.object().shape({
+              name: yup.string().label("Name").min(6).max(30).required(),
               email: yup
                 .string()
                 .label("Email")
@@ -91,11 +72,18 @@ export const LoginPage = () => {
                 .label("Password")
                 .min(8)
                 .max(30)
+                // .oneOf([yup.ref("passwordConfirm")], "Passwords must match")
                 .required(),
+              passwordConfirm: yup
+                .string()
+                .label("Confirm Password")
+                .oneOf([yup.ref("password")], "Passwords must match")
+                .required("Confirm Password is required"),
             })}
           >
             <Form autoComplete="off">
-              <h1 className="login__title">Login</h1>
+              <h1 className="login__title">Registraion</h1>
+              <Input label="Name" required name="name" />
               <Input label="Email" required name="email" />
               <div className="login__passwordBox">
                 <Input
@@ -115,8 +103,30 @@ export const LoginPage = () => {
                   <></>
                 </button>
               </div>
-              <button className="login__button" type="submit">
-                Login
+              <div className="login__passwordBox">
+                <Input
+                  label="Confirm password"
+                  name="passwordConfirm"
+                  type={!showPassword ? "password" : "text"}
+                />
+                <button
+                  onClick={toggleShowPassword}
+                  type="button"
+                  className={
+                    !showPassword
+                      ? "login__passwordBox__btnShow"
+                      : "login__passwordBox__btnHide"
+                  }
+                >
+                  <></>
+                </button>
+              </div>
+              <button
+                className="login__button"
+                type="submit"
+                onSubmit={handleSubmit}
+              >
+                Registration
               </button>
             </Form>
           </Formik>
