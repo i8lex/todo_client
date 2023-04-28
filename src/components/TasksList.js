@@ -2,7 +2,8 @@ import React from "react";
 import { format, parseISO } from "date-fns";
 import { Timer } from "./Timer";
 import Checkbox from "./Checkbox";
-import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
+// import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
+import { ThumbList } from "./ThumbList";
 
 export const TasksList = ({
   _id,
@@ -16,7 +17,7 @@ export const TasksList = ({
   pathTask,
   images,
 }) => {
-  const { data = [], isLoading } = useGetThumbsQuery(_id);
+  // const { data = [], isLoading } = useGetThumbsQuery(_id);
 
   return (
     <li className="tasks__itemBox">
@@ -93,26 +94,8 @@ export const TasksList = ({
 
           <Checkbox taskId={_id} />
         </div>
+        <ThumbList _id={_id} images={images} />
       </div>
-
-      {!images.length ? (
-        <>
-          <h3>You can upload images</h3>
-        </>
-      ) : (
-        <ul className="tasks__item__imageBox">
-          {data.map(({ thumb, mimetype, _id }) => {
-            return (
-              <li className="tasks__item__thumbBox" key={_id}>
-                <img
-                  className="tasks__thumb"
-                  src={`data:${mimetype};base64,${thumb.toString("base64")}`}
-                />
-              </li>
-            );
-          })}
-        </ul>
-      )}
     </li>
   );
 };
