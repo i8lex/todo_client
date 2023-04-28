@@ -15,6 +15,7 @@ import persistStore from "redux-persist/es/persistStore";
 import { authApi } from "./auth/authApi";
 import { tasksApi } from "./tasks/tasksApi";
 import tasksReducer from "./tasks/taskSlice";
+import { imageApi } from "./images/imageApi";
 
 const authPersistConfig = {
   key: "auth",
@@ -28,6 +29,7 @@ export const store = configureStore({
     auth: persistReducer(authPersistConfig, authSlice),
     [authApi.reducerPath]: authApi.reducer,
     [tasksApi.reducerPath]: tasksApi.reducer,
+    [imageApi.reducerPath]: imageApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) => [
@@ -35,7 +37,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware, tasksApi.middleware),
+    }).concat(authApi.middleware, tasksApi.middleware, imageApi.middleware),
   ],
 });
 

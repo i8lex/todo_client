@@ -114,6 +114,10 @@
     grid-template-columns: 1fr;
   }
 
+  &__itemBox {
+    display: flex;
+  }
+
   &__item {
     @include flex-column-center;
     min-width: 400px;

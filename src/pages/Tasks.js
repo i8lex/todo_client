@@ -67,25 +67,32 @@ export const TasksPage = () => {
             </Formik>
           </div>
           <ul className="tasks__list">
-            {data.map(({ _id, title, description, created, deadline }) => {
-              if (!deadline) {
-                deadline = "Not set";
+            {data.map(
+              ({ _id, title, description, created, deadline, images }) => {
+                if (!deadline) {
+                  deadline = "Not set";
+                }
+                if (!images) {
+                  images = [];
+                }
+                console.log(images);
+                return (
+                  <TasksList
+                    key={_id}
+                    _id={_id}
+                    created={created}
+                    deadline={deadline}
+                    description={description}
+                    title={title}
+                    setDeleteConfirmModal={setDeleteConfirmModal}
+                    setEditModal={setEditModal}
+                    deleteTask={deleteTask}
+                    pathTask={pathTask}
+                    images={images}
+                  />
+                );
               }
-              return (
-                <TasksList
-                  key={_id}
-                  _id={_id}
-                  created={created}
-                  deadline={deadline}
-                  description={description}
-                  title={title}
-                  setDeleteConfirmModal={setDeleteConfirmModal}
-                  setEditModal={setEditModal}
-                  deleteTask={deleteTask}
-                  pathTask={pathTask}
-                />
-              );
-            })}
+            )}
           </ul>
         </div>
       </div>

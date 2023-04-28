@@ -235,6 +235,9 @@
   grid-gap: 10px;
   grid-template-columns: 1fr;
 }
+.tasks__itemBox {
+  display: flex;
+}
 .tasks__item {
   display: flex;
   flex-direction: column;

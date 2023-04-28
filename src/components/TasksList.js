@@ -2,6 +2,7 @@ import React from "react";
 import { format, parseISO } from "date-fns";
 import { Timer } from "./Timer";
 import Checkbox from "./Checkbox";
+import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
 
 export const TasksList = ({
   _id,
@@ -13,81 +14,105 @@ export const TasksList = ({
   setEditModal,
   deleteTask,
   pathTask,
+  images,
 }) => {
+  const { data = [], isLoading } = useGetThumbsQuery(_id);
+
   return (
-    <li className="tasks__item">
-      <h4 className="tasks__item__title">{title}</h4>
-      <p className="tasks__item__description">{description}</p>
-      <div className="tasks__item__dateBox">
-        <div>
-          <p className="tasks__item__dateText">Created at:</p>
-          <p className="tasks__item__date">
-            {format(parseISO(created), "d MMM yyyy")}
-          </p>
-          <p className="tasks__item__date">
-            {format(parseISO(created), "HH:mm:ss")}
-          </p>
+    <li className="tasks__itemBox">
+      <div className="tasks__item">
+        <h4 className="tasks__item__title">{title}</h4>
+        <p className="tasks__item__description">{description}</p>
+        <div className="tasks__item__dateBox">
+          <div>
+            <p className="tasks__item__dateText">Created at:</p>
+            <p className="tasks__item__date">
+              {format(parseISO(created), "d MMM yyyy")}
+            </p>
+            <p className="tasks__item__date">
+              {format(parseISO(created), "HH:mm:ss")}
+            </p>
+          </div>
+          <div>
+            <p className="tasks__item__dateText">Deadline at:</p>
+            {deadline !== "Not set" ? (
+              <>
+                <p className="tasks__item__date">
+                  {format(parseISO(deadline), "d MMM yyyy")}
+                </p>
+                <p className="tasks__item__date">
+                  {format(parseISO(deadline), "HH:mm:ss")}
+                </p>
+              </>
+            ) : (
+              <p className="tasks__item__date">{deadline}</p>
+            )}
+          </div>
+
+          <Timer deadline={deadline} />
         </div>
-        <div>
-          <p className="tasks__item__dateText">Deadline at:</p>
-          {deadline !== "Not set" ? (
-            <>
-              <p className="tasks__item__date">
-                {format(parseISO(deadline), "d MMM yyyy")}
-              </p>
-              <p className="tasks__item__date">
-                {format(parseISO(deadline), "HH:mm:ss")}
-              </p>
-            </>
-          ) : (
-            <p className="tasks__item__date">{deadline}</p>
-          )}
+        <div className="tasks__item__iconBox">
+          <button
+            className="tasks__modalEdit__iconBtn"
+            onClick={() => {
+              setEditModal({
+                isOpen: true,
+                data: { title, description, deadline },
+                handleConfirm: async (values) => {
+                  try {
+                    await pathTask({ id: _id, body: values });
+
+                    setEditModal((prevState) => ({
+                      ...prevState,
+                      isOpen: false,
+                    }));
+                  } catch (error) {}
+                },
+                title: `Update ${title}`,
+              });
+            }}
+          >
+            <></>
+          </button>
+
+          <button
+            className="tasks__delete__button"
+            type="button"
+            onClick={() =>
+              setDeleteConfirmModal({
+                isOpen: true,
+                title: title,
+                handleConfirm: async () => {
+                  await deleteTask(`?ids=${_id}`);
+                },
+              })
+            }
+          >
+            <></>
+          </button>
+
+          <Checkbox taskId={_id} />
         </div>
-
-        <Timer deadline={deadline} />
       </div>
-      <div className="tasks__item__iconBox">
-        <button
-          className="tasks__modalEdit__iconBtn"
-          onClick={() => {
-            setEditModal({
-              isOpen: true,
-              data: { title, description, deadline },
-              handleConfirm: async (values) => {
-                try {
-                  await pathTask({ id: _id, body: values });
 
-                  setEditModal((prevState) => ({
-                    ...prevState,
-                    isOpen: false,
-                  }));
-                } catch (error) {}
-              },
-              title: `Update ${title}`,
-            });
-          }}
-        >
-          <></>
-        </button>
-
-        <button
-          className="tasks__delete__button"
-          type="button"
-          onClick={() =>
-            setDeleteConfirmModal({
-              isOpen: true,
-              title: title,
-              handleConfirm: async () => {
-                await deleteTask(`?ids=${_id}`);
-              },
-            })
-          }
-        >
-          <></>
-        </button>
-
-        <Checkbox taskId={_id} />
-      </div>
+      {!images.length ? (
+        <>
+          <h3>You can upload images</h3>
+        </>
+      ) : (
+        <ul className="tasks__item__imageBox">
+          {data.map(({ thumb, mimetype, _id }) => {
+            return (
+              <li className="tasks__item__thumbBox" key={_id}>
+                <img
+                  className="tasks__thumb"
+                  src={`data:${mimetype};base64,${thumb.toString("base64")}`}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </li>
   );
 };
