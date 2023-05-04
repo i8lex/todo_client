@@ -234,6 +234,7 @@
       max-height: 100px;
       display: flex;
       border-radius: 5px;
+      cursor: pointer;
       overflow: hidden;
       object-fit: cover;
       object-position: center;
@@ -242,6 +243,15 @@
       max-width: 100px;
       max-height: 100px;
 
+    }
+
+    &__thumbsMore{
+      @include icon;
+
+      &::after {
+        content: "\e413";
+        font-size: 4rem;
+      }
     }
   }
 

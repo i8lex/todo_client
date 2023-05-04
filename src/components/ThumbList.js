@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
+
 import { ModalThumbsList } from "./ModalThumbsList";
 
 export const ThumbList = ({ _id, images }) => {
   const [isThumbsOpen, setIsThumbsOpen] = useState(false);
-  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [imageId, setImageId] = useState("");
   const { data = [], isLoading } = useGetThumbsQuery(_id);
+
   if (isLoading) {
     return <h3>...LOADING...</h3>;
   }
 
   const modalThumbsHandler = () => {
     setIsThumbsOpen(!isThumbsOpen);
-    console.log(isThumbsOpen);
   };
 
   return (
@@ -23,26 +24,33 @@ export const ThumbList = ({ _id, images }) => {
         </>
       ) : (
         <ul className="tasks__item__thumbsWrapper">
-          {data.slice(0, 3).map(({ thumb, mimetype, _id }) => {
+          {data.slice(0, 3).map(({ thumb, mimetype, _id, image, filename }) => {
             return (
               <li
                 className="tasks__item__thumbBox"
                 key={_id}
-                onClick={modalThumbsHandler}
+                onClick={() => {
+                  setImageId(image);
+                  modalThumbsHandler();
+                }}
               >
                 <img
-                  alt="Task reminder"
+                  alt={filename}
                   className="tasks__item__thumb"
                   src={`data:${mimetype};base64,${thumb.toString("base64")}`}
                 />
               </li>
             );
           })}
+          <li className="tasks__item__thumbsMore" onClick={modalThumbsHandler}>
+            <></>
+          </li>
         </ul>
       )}
       <ModalThumbsList
         data={data}
-        isImageOpen={isImageOpen}
+        imageId={imageId}
+        setImageId={setImageId}
         isThumbsOpen={isThumbsOpen}
         modalThumbsHandler={modalThumbsHandler}
       />

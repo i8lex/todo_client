@@ -75,7 +75,7 @@ export const TasksPage = () => {
                 if (!images) {
                   images = [];
                 }
-                console.log(images);
+                // console.log(images);
                 return (
                   <TasksList
                     key={_id}

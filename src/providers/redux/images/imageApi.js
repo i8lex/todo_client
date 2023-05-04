@@ -19,15 +19,20 @@ export const imageApi = createApi({
 
   endpoints: (build) => ({
     getImage: build.query({
-      query: () => "image",
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Image", id })),
-              { type: "Image", id: "LIST" },
-            ]
-          : [{ type: "Image", id: "LIST" }],
+      query: (id) => ({ url: `image/${id}` }),
+      providesTags: (result, error, id) => [{ type: "Image", id }],
+      responseType: "arraybuffer",
     }),
+    // getImage: build.query({
+    //   query: (id) => `image/${id}`,
+    //   providesTags: (result) =>
+    //     result
+    //       ? [
+    //           ...result.map(({ id }) => ({ type: "Image", id })),
+    //           { type: "Image", id: "LIST" },
+    //         ]
+    //       : [{ type: "Image", id: "LIST" }],
+    // }),
     getThumbs: build.query({
       query: (id) => `thumbs/${id}`,
       providesTags: (result) =>
