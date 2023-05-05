@@ -14,6 +14,30 @@
     @include flex-column-center;
     gap: 15px;
   }
+  &__uploadBox{
+    padding: 5px;
+    overflow: hidden;
+    background-color: rgba(150, 150, 150, 0.5);
+    border-radius: 7px;
+    cursor: copy;
+    &__title {
+      margin-top: 4rem;
+      @include flex-column-center;
+      font-family: "Roboto", sans-serif;
+      font-size: 1.1rem;
+      line-height: 1.5rem;
+      text-align: center;
+      &::after {
+        margin-top: 7rem;
+        display: block;
+        font-size: 3rem;
+        position: absolute;
+        font-family: "Material Symbols Rounded";
+        content: "\e2c3";
+      }
+    }
+  }
+
 
   &__thumbsBox {
     display: flex;

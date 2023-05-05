@@ -49,7 +49,7 @@ export const imageApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: "Image", id: "LIST" }],
+      // invalidatesTags: [{ type: "Image", id: "LIST" }],
     }),
 
     deleteImage: build.mutation({

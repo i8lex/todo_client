@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
 // import { useDispatch } from "react-redux";
 import { ModalThumbsList } from "./ModalThumbsList";
-import ImageUploader from "./ImageUploader";
+import { ImageUploader } from "./ImageUploader";
 // import { setImageId } from "../providers/redux/images/imageSlice";
 
 export const ThumbList = ({ _id, images }) => {
   // const dispatch = useDispatch();
   const [isThumbsOpen, setIsThumbsOpen] = useState(false);
   const [imageId, setImageId] = useState("");
-  const { data = [], isLoading } = useGetThumbsQuery(_id);
+  const [isGetImages, setIsGetImages] = useState(false);
+  const { data = [], refetch, isLoading } = useGetThumbsQuery(_id);
+
+  useEffect(() => {
+    if (isGetImages) {
+      refetch();
+    }
+  }, [isGetImages, refetch]);
 
   if (isLoading) {
     return <h3>...LOADING...</h3>;
@@ -25,12 +32,13 @@ export const ThumbList = ({ _id, images }) => {
   };
   return (
     <>
-      {!images.length ? (
+      {!isGetImages && !images.length ? (
         <>
-          <h3 className="tasks__item__thumbUpload">
-            You can upload images here
-          </h3>
-          <ImageUploader onFileSelect={handleFileSelect} />
+          <ImageUploader
+            setIsGetImages={setIsGetImages}
+            onFileSelect={handleFileSelect}
+            _id={_id}
+          />
         </>
       ) : (
         <ul className="tasks__item__thumbsWrapper">
