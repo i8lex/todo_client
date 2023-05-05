@@ -3,10 +3,50 @@
 
 
 .image {
+  width: 100%;
+  height: 100%;
   display: flex;
+  justify-content: space-between;
+  gap: 10px;
   position: relative;
 
   &__wrapper {
     @include flex-column-center;
+    gap: 15px;
+  }
+
+  &__thumbsBox {
+    display: flex;
+    overflow: hidden;
+    border-radius: 5px;
+
+    &__thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  &__imageBox {
+    max-width: 85rem;
+    display: flex;
+    overflow: hidden;
+    border-radius: 20px;
+    object-fit: cover;
+    object-position: center;
+    &__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+  &__close {
+    @include icon-close-button;
+    font-size: 2rem;
+    &::after {
+      content: "\e8c6";
+    }
   }
 }

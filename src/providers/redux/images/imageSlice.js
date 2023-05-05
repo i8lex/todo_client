@@ -1,23 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const tasksSlice = createSlice({
+const imageSlice = createSlice({
   name: "image",
-  initialState: [],
+  initialState: {},
   reducers: {
-    toggleTask: (state, action) => {
-      const { itemId, isChecked } = action.payload;
-
-      if (isChecked) {
-        state.push(itemId);
-      } else {
-        const index = state.indexOf(itemId);
-        if (index !== -1) {
-          state.splice(index, 1);
-        }
-      }
+    setImageId: (state, action) => {
+      state.imageId = action.payload;
     },
   },
 });
 
-export const { toggleImage } = imageSlice.actions;
+export const { setImageId } = imageSlice.actions;
 export default imageSlice.reducer;

@@ -56,7 +56,7 @@
   position: absolute;
   cursor: pointer;
   content: "\e8f4";
-  font-family: "Material Icons";
+  font-family: "Material Symbols Rounded";
   color: rgba(0, 0, 0, 0.5);
   font-size: 20px;
   text-align: left;
@@ -73,26 +73,28 @@
   gap: 4rem;
 }
 .login__modal__close {
-  align-self: flex-end;
   position: relative;
+  padding: 18px;
   background: none;
   border: none;
+  font-size: 2rem;
 }
 .login__modal__close::after {
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  right: 0;
+  top: 0;
   position: absolute;
   cursor: pointer;
-  content: "\e8c6";
-  font-family: "Material Icons";
-  font-size: 20px;
+  font-family: "Material Symbols Rounded";
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
   text-align: left;
 }
 .login__modal__close::after:hover {
   z-index: 3;
   transform: scale(1.1);
   transition: transform 200ms ease-in-out;
+}
+.login__modal__close::after {
+  content: "\e8c6";
 }
 .login__modal__title {
   margin: 30px;
@@ -584,7 +586,11 @@
 }
 
 .image {
+  width: 100%;
+  height: 100%;
   display: flex;
+  justify-content: space-between;
+  gap: 10px;
   position: relative;
 }
 .image__wrapper {
@@ -592,6 +598,56 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 15px;
+}
+.image__thumbsBox {
+  display: flex;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.image__thumbsBox__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.image__imageBox {
+  max-width: 85rem;
+  display: flex;
+  overflow: hidden;
+  border-radius: 20px;
+  object-fit: cover;
+  object-position: center;
+}
+.image__imageBox__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.image__close {
+  position: relative;
+  padding: 18px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+}
+.image__close::after {
+  right: 0;
+  top: 0;
+  position: absolute;
+  cursor: pointer;
+  font-family: "Material Symbols Rounded";
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+  text-align: left;
+}
+.image__close::after:hover {
+  z-index: 3;
+  transform: scale(1.1);
+  transition: transform 200ms ease-in-out;
+}
+.image__close::after {
+  content: "\e8c6";
 }
 
 @font-face {

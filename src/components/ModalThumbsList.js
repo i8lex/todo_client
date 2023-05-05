@@ -1,6 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
+// import { useSelector, useDispatch } from "react-redux";
 import { useGetImageQuery } from "../providers/redux/images/imageApi";
+// import { setImageId } from "../providers/redux/images/imageSlice";
 
 Modal.setAppElement("#root");
 
@@ -8,24 +10,23 @@ export const ModalThumbsList = ({
   data: thumb,
   isThumbsOpen,
   modalThumbsHandler,
+  imageId,
+  setImageId,
 }) => {
-  const [selectedImageId, setSelectedImageId] = React.useState(
-    "645408c55bcf2a0413bd487b"
-  );
-  // const selectedImage = useGetImageQuery(selectedImageId);
-  const { data, isLoading, isError } = useGetImageQuery(selectedImageId);
-  if (isLoading) return <p>Loading image...</p>;
+  // const dispatch = useDispatch();
+  // const imageId = useSelector((state) => state.image.imageId);
+  console.log(imageId);
+  const {
+    data: image,
+    isLoading,
+    isError,
+  } = useGetImageQuery(imageId, {
+    skip: !imageId,
+  });
+
+  if (isLoading) return <p>...Loading image...</p>;
   if (isError) return <p>Error loading image</p>;
 
-  console.log(isLoading);
-  console.log(isError);
-  const imageBlob = new Blob([data], {
-    type: data.type,
-  });
-  console.log(data.image);
-
-  const imageUrl = URL.createObjectURL(imageBlob);
-  console.log(imageUrl);
   return (
     <Modal
       isOpen={isThumbsOpen}
@@ -35,8 +36,8 @@ export const ModalThumbsList = ({
           backgroundColor: "rgba(0, 0, 0, 0.6)",
         },
         content: {
-          maxWidth: "1000px",
-          maxHeight: "1000px",
+          maxWidth: "100rem",
+          maxHeight: "100rem",
           margin: "0 auto",
           border: "none",
           borderRadius: "10px",
@@ -48,26 +49,34 @@ export const ModalThumbsList = ({
         <ul className="image__wrapper">
           {thumb.map(({ thumb, mimetype, _id, filename, image }) => {
             return (
-              <li key={_id} className="image__modal__thumbsBox">
+              <li key={_id} className="image__thumbsBox">
                 <img
-                  className="image__modal__thumb"
+                  className="image__thumbsBox__thumb"
                   src={`data:${mimetype};base64,${thumb.toString("base64")}`}
                   alt={filename}
-                  onClick={() => setSelectedImageId(image)}
+                  // onClick={() => dispatch(setImageId(image))}
+                  onClick={() => setImageId(image)}
                 />
               </li>
             );
           })}
         </ul>
-
-        <img
-          src={`data:${data.mimetype};base64,${data.image.toString("base64")}`}
-          alt=""
-          className="image__imageBox"
-        />
+        {!imageId ? (
+          <></>
+        ) : (
+          <div className="image__imageBox">
+            <img
+              src={`data:${image.mimetype};base64,${image.image.toString(
+                "base64"
+              )}`}
+              alt=""
+              className="image__imageBox__img"
+            />
+          </div>
+        )}
 
         <button
-          className="image__modal__close"
+          className="image__close"
           type="button"
           onClick={modalThumbsHandler}
         >

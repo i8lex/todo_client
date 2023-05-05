@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
-
+// import { useDispatch } from "react-redux";
 import { ModalThumbsList } from "./ModalThumbsList";
+// import { setImageId } from "../providers/redux/images/imageSlice";
 
 export const ThumbList = ({ _id, images }) => {
+  // const dispatch = useDispatch();
   const [isThumbsOpen, setIsThumbsOpen] = useState(false);
   const [imageId, setImageId] = useState("");
   const { data = [], isLoading } = useGetThumbsQuery(_id);
@@ -20,7 +22,9 @@ export const ThumbList = ({ _id, images }) => {
     <>
       {!images.length ? (
         <>
-          <h3>You can upload images</h3>
+          <h3 className="tasks__item__thumbUpload">
+            You can upload images here
+          </h3>
         </>
       ) : (
         <ul className="tasks__item__thumbsWrapper">
@@ -30,6 +34,7 @@ export const ThumbList = ({ _id, images }) => {
                 className="tasks__item__thumbBox"
                 key={_id}
                 onClick={() => {
+                  // dispatch(setImageId(image));
                   setImageId(image);
                   modalThumbsHandler();
                 }}
@@ -42,7 +47,13 @@ export const ThumbList = ({ _id, images }) => {
               </li>
             );
           })}
-          <li className="tasks__item__thumbsMore" onClick={modalThumbsHandler}>
+          <li
+            className="tasks__item__thumbsMore"
+            onClick={() => {
+              modalThumbsHandler();
+              setImageId("");
+            }}
+          >
             <></>
           </li>
         </ul>

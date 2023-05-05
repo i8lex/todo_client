@@ -40,7 +40,7 @@
         position: absolute;
         cursor: pointer;
         content: "\e8f4";
-        font-family: "Material Icons";
+        font-family: "Material Symbols Rounded";
         color: rgba(0, 0, 0, 0.5);
         font-size: 20px;
         text-align: left;
@@ -59,25 +59,10 @@
     gap: 4rem;
 
     &__close {
-      align-self: flex-end;
-      position: relative;
-      background: none;
-      border: none;
+      @include icon-close-button;
+      font-size: 2rem;
       &::after {
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        position: absolute;
-        cursor: pointer;
         content: "\e8c6";
-        font-family: "Material Icons";
-        font-size: 20px;
-        text-align: left;
-        &:hover {
-          z-index: 3;
-          transform: scale(1.1);
-          transition: transform  200ms ease-in-out;
-        }
       }
     }
 

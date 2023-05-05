@@ -15,6 +15,7 @@ import persistStore from "redux-persist/es/persistStore";
 import { authApi } from "./auth/authApi";
 import { tasksApi } from "./tasks/tasksApi";
 import tasksReducer from "./tasks/taskSlice";
+import imageReducer from "./images/imageSlice";
 import { imageApi } from "./images/imageApi";
 
 const authPersistConfig = {
@@ -26,6 +27,7 @@ const authPersistConfig = {
 export const store = configureStore({
   reducer: {
     tasks: tasksReducer,
+    image: imageReducer,
     auth: persistReducer(authPersistConfig, authSlice),
     [authApi.reducerPath]: authApi.reducer,
     [tasksApi.reducerPath]: tasksApi.reducer,

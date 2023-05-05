@@ -124,6 +124,33 @@ $line-height: 30px;
   }
 }
 
+@mixin icon-close-button {
+  position: relative;
+  padding: 18px;
+  background: none;
+  border: none;
+  &::after {
+    right: 0;
+    top: 0;
+    //transform: translate(-50%, -50%);
+    position: absolute;
+    cursor: pointer;
+    font-family: "Material Symbols Rounded";
+    font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 48;
+    //font-size: 2rem;
+    text-align: left;
+    &:hover {
+      z-index: 3;
+      transform: scale(1.1);
+      transition: transform  200ms ease-in-out;
+    }
+  }
+}
+
 @mixin icon {
   position: relative;
   padding: 18px;
