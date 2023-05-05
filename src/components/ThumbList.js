@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
 // import { useDispatch } from "react-redux";
 import { ModalThumbsList } from "./ModalThumbsList";
+import ImageUploader from "./ImageUploader";
 // import { setImageId } from "../providers/redux/images/imageSlice";
 
 export const ThumbList = ({ _id, images }) => {
@@ -18,6 +19,10 @@ export const ThumbList = ({ _id, images }) => {
     setIsThumbsOpen(!isThumbsOpen);
   };
 
+  const handleFileSelect = (files) => {
+    // Handle the selected files
+    console.log(files);
+  };
   return (
     <>
       {!images.length ? (
@@ -25,6 +30,7 @@ export const ThumbList = ({ _id, images }) => {
           <h3 className="tasks__item__thumbUpload">
             You can upload images here
           </h3>
+          <ImageUploader onFileSelect={handleFileSelect} />
         </>
       ) : (
         <ul className="tasks__item__thumbsWrapper">
