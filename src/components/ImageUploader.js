@@ -32,7 +32,6 @@ export const ImageUploader = ({ _id, setIsGetImages }) => {
       // await addImage(body);
       // setIsGetImages(true);
 
-
       const body = new FormData();
       let totalSize = 0;
       files.forEach((file) => {
