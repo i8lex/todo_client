@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ModalThumbsList } from "./ModalThumbsList";
 import { ImageUploader } from "./ImageUploader";
-// import { setImageId } from "../providers/redux/images/imageSlice";
+import { setImageId } from "../providers/redux/images/imageSlice";
 
 export const ThumbList = ({ _id, images }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [isThumbsOpen, setIsThumbsOpen] = useState(false);
-  const [imageId, setImageId] = useState("");
   const [isGetImages, setIsGetImages] = useState(false);
   const { data = [], refetch, isLoading } = useGetThumbsQuery(_id);
 
@@ -48,8 +47,7 @@ export const ThumbList = ({ _id, images }) => {
                 className="tasks__item__thumbBox"
                 key={_id}
                 onClick={() => {
-                  // dispatch(setImageId(image));
-                  setImageId(image);
+                  dispatch(setImageId(image));
                   modalThumbsHandler();
                 }}
               >
@@ -65,7 +63,7 @@ export const ThumbList = ({ _id, images }) => {
             className="tasks__item__thumbsMore"
             onClick={() => {
               modalThumbsHandler();
-              setImageId("");
+              dispatch(setImageId(""));
             }}
           >
             <></>
@@ -74,8 +72,6 @@ export const ThumbList = ({ _id, images }) => {
       )}
       <ModalThumbsList
         data={data}
-        imageId={imageId}
-        setImageId={setImageId}
         isThumbsOpen={isThumbsOpen}
         modalThumbsHandler={modalThumbsHandler}
       />
