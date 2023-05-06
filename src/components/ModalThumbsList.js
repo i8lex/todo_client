@@ -35,6 +35,14 @@ export const ModalThumbsList = ({
     >
       <div className="image">
         <ul className="image__wrapper">
+          <li
+            onClick={() => dispatch(setImage({}))}
+            className="image__thumbsBox"
+          >
+            <div className="image__thumbsBox__toUpload">
+              <></>
+            </div>
+          </li>
           {thumb.map(({ thumb, mimetype, _id, filename, image }) => {
             return (
               <li key={_id} className="image__thumbsBox">
@@ -52,7 +60,13 @@ export const ModalThumbsList = ({
             );
           })}
         </ul>
-        {!imageId ? <ImageUploader /> : <Image />}
+        {!imageId ? (
+          <div className="image__imageBox">
+            <ImageUploader />
+          </div>
+        ) : (
+          <Image />
+        )}
 
         <button
           className="image__close"

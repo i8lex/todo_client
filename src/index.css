@@ -601,6 +601,8 @@
   gap: 15px;
 }
 .image__uploadBox {
+  width: 100%;
+  height: 100%;
   padding: 5px;
   overflow: hidden;
   background-color: rgba(150, 150, 150, 0.5);
@@ -627,9 +629,42 @@
   content: "\e2c3";
 }
 .image__thumbsBox {
+  width: 100%;
+  height: 100%;
+  max-width: 200px;
+  max-height: 200px;
   display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: rgba(150, 150, 150, 0.5);
+}
+.image__thumbsBox__toUpload {
+  position: relative;
+  padding: 18px;
+  background: none;
+  border: none;
+  font-size: 7rem;
+}
+.image__thumbsBox__toUpload::after {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  cursor: pointer;
+  font-family: "Material Symbols Rounded";
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+  text-align: left;
+}
+.image__thumbsBox__toUpload::after:hover {
+  z-index: 3;
+  transform: scale(1.1);
+  transition: transform 200ms ease-in-out;
+}
+.image__thumbsBox__toUpload::after {
+  content: "\f09b";
 }
 .image__thumbsBox__thumb {
   width: 100%;
@@ -638,8 +673,12 @@
   object-position: center;
 }
 .image__imageBox {
-  max-width: 85rem;
+  width: 100%;
+  height: 100%;
+  max-width: 75rem;
   display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
   border-radius: 20px;
   object-fit: cover;

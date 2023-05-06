@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useGetImageQuery } from "../providers/redux/images/imageApi";
 
@@ -11,10 +11,17 @@ export const Image = () => {
     data: image,
     isLoading,
     isError,
+    refetch,
   } = useGetImageQuery(imageId, {
     skip: !imageId,
     enabled: !!imageId,
   });
+
+  // useEffect(() => {
+  //   if (!!imageId) {
+  //     refetch();
+  //   }
+  // }, [imageId, refetch]);
 
   if (isLoading) {
     return (
