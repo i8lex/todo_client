@@ -1,8 +1,9 @@
 import React from "react";
 import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
-import { setImageId } from "../providers/redux/images/imageSlice";
+import { setImage } from "../providers/redux/images/imageSlice";
 import { Image } from "./Image";
+import { ImageUploader } from "./ImageUploader";
 
 Modal.setAppElement("#root");
 
@@ -12,7 +13,7 @@ export const ModalThumbsList = ({
   modalThumbsHandler,
 }) => {
   const dispatch = useDispatch();
-  const imageId = useSelector((state) => state.image.imageId);
+  const { imageId } = useSelector((state) => state.image.image);
 
   return (
     <Modal
@@ -41,19 +42,23 @@ export const ModalThumbsList = ({
                   className="image__thumbsBox__thumb"
                   src={`data:${mimetype};base64,${thumb.toString("base64")}`}
                   alt={filename}
-                  onClick={() => dispatch(setImageId(image))}
+                  onClick={() =>
+                    dispatch(
+                      setImage({ imageId: image, mimetype, thumb, filename })
+                    )
+                  }
                 />
               </li>
             );
           })}
         </ul>
-        {!imageId ? <></> : <Image />}
+        {!imageId ? <ImageUploader /> : <Image />}
 
         <button
           className="image__close"
           type="button"
           onClick={() => {
-            dispatch(setImageId(""));
+            dispatch(setImage({}));
             modalThumbsHandler();
           }}
         >

@@ -3,7 +3,7 @@ import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
 import { useDispatch } from "react-redux";
 import { ModalThumbsList } from "./ModalThumbsList";
 import { ImageUploader } from "./ImageUploader";
-import { setImageId } from "../providers/redux/images/imageSlice";
+import { setImage } from "../providers/redux/images/imageSlice";
 
 export const ThumbList = ({ _id, images }) => {
   const dispatch = useDispatch();
@@ -47,7 +47,9 @@ export const ThumbList = ({ _id, images }) => {
                 className="tasks__item__thumbBox"
                 key={_id}
                 onClick={() => {
-                  dispatch(setImageId(image));
+                  dispatch(
+                    setImage({ imageId: image, mimetype, thumb, filename })
+                  );
                   modalThumbsHandler();
                 }}
               >
@@ -63,7 +65,7 @@ export const ThumbList = ({ _id, images }) => {
             className="tasks__item__thumbsMore"
             onClick={() => {
               modalThumbsHandler();
-              dispatch(setImageId(""));
+              dispatch(setImage({}));
             }}
           >
             <></>

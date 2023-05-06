@@ -24,41 +24,41 @@ export const ImageUploader = ({ _id, setIsGetImages }) => {
   });
   const uploadImages = async (files) => {
     try {
-      // const body = new FormData();
-      // files.forEach((file) => {
-      //   body.append("images", file);
-      // });
-      // body.append("task", _id);
-      // await addImage(body);
-      // setIsGetImages(true);
-
       const body = new FormData();
-      let totalSize = 0;
-      files.forEach((file) => {
-        totalSize += file.size;
-        if (!["image/jpeg", "image/png"].includes(file.type)) {
-          setErrorMessage("Invalid file format");
-          console.log(errorMessage);
-          return;
-        }
-        if (files.length > 5) {
-          setErrorMessage("Maximum number of files - 5");
-          console.log(errorMessage);
-          return;
-        }
-      });
-      if (totalSize > 15 * 1024 * 1024) {
-        setErrorMessage("Maximum file size - 3 MB");
-        console.log(errorMessage);
-
-        return;
-      }
       files.forEach((file) => {
         body.append("images", file);
       });
       body.append("task", _id);
       await addImage(body);
       setIsGetImages(true);
+
+      // const body = new FormData();
+      // let totalSize = 0;
+      // files.forEach((file) => {
+      //   totalSize += file.size;
+      //   if (!["image/jpeg", "image/png"].includes(file.type)) {
+      //     setErrorMessage("Invalid file format");
+      //     console.log(errorMessage);
+      //     return;
+      //   }
+      //   if (files.length > 5) {
+      //     setErrorMessage("Maximum number of files - 5");
+      //     console.log(errorMessage);
+      //     return;
+      //   }
+      // });
+      // if (totalSize > 15 * 1024 * 1024) {
+      //   setErrorMessage("Maximum file size - 3 MB");
+      //   console.log(errorMessage);
+      //
+      //   return;
+      // }
+      // files.forEach((file) => {
+      //   body.append("images", file);
+      // });
+      // body.append("task", _id);
+      // await addImage(body);
+      // setIsGetImages(true);
     } catch (error) {
       console.log(error);
     }
