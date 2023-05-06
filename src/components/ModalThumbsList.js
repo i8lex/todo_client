@@ -11,6 +11,8 @@ export const ModalThumbsList = ({
   data: thumb,
   isThumbsOpen,
   modalThumbsHandler,
+  setIsGetImages,
+  _id,
 }) => {
   const dispatch = useDispatch();
   const { imageId } = useSelector((state) => state.image.image);
@@ -62,7 +64,7 @@ export const ModalThumbsList = ({
         </ul>
         {!imageId ? (
           <div className="image__imageBox">
-            <ImageUploader />
+            <ImageUploader _id={_id} setIsGetImages={setIsGetImages} />
           </div>
         ) : (
           <Image />

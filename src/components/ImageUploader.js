@@ -1,79 +1,110 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useAddImageMutation } from "../providers/redux/images/imageApi";
+import { useDispatch } from "react-redux";
+import { setModalThumbsNeedRefetch } from "../providers/redux/images/imageSlice";
 
 export const ImageUploader = ({ _id, setIsGetImages }) => {
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [isUploadSuccess, setIsUploadIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    accept: {
-      "image/jpeg": [".jpg", ".jpeg"],
-      "image/png": [".png"],
-    },
-    maxFiles: 5,
-    maxSize: 3 * 1024 * 1024,
-    onDrop: (acceptedFiles) => {
-      uploadImages(acceptedFiles);
-    },
-  });
+  const dispatch = useDispatch();
+  const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
+    useDropzone({
+      accept: {
+        "image/jpeg": [".jpg", ".jpeg"],
+        "image/png": [".png"],
+      },
+      maxFiles: 4,
+      maxSize: 4 * 1024 * 1024,
+      onDrop: (acceptedFiles) => {
+        uploadImages(acceptedFiles);
+      },
+    });
 
-  const [addImage, { isLoading }] = useAddImageMutation({
+  const [addImage, { isLoading, isSuccess }] = useAddImageMutation({
     onError: (error) => {
       console.error(error);
     },
   });
+
   const uploadImages = async (files) => {
     try {
       const body = new FormData();
+
       files.forEach((file) => {
         body.append("images", file);
       });
-      body.append("task", _id);
-      await addImage(body);
-      setIsGetImages(true);
 
-      // const body = new FormData();
-      // let totalSize = 0;
-      // files.forEach((file) => {
-      //   totalSize += file.size;
-      //   if (!["image/jpeg", "image/png"].includes(file.type)) {
-      //     setErrorMessage("Invalid file format");
-      //     console.log(errorMessage);
-      //     return;
-      //   }
-      //   if (files.length > 5) {
-      //     setErrorMessage("Maximum number of files - 5");
-      //     console.log(errorMessage);
-      //     return;
-      //   }
-      // });
-      // if (totalSize > 15 * 1024 * 1024) {
-      //   setErrorMessage("Maximum file size - 3 MB");
-      //   console.log(errorMessage);
-      //
-      //   return;
+      body.append("task", _id);
+
+      await addImage(body);
+
+      dispatch(setModalThumbsNeedRefetch(true));
+      // if (!fileRejections.length) {
+      //   setIsGetImages(true);
       // }
-      // files.forEach((file) => {
-      //   body.append("images", file);
-      // });
-      // body.append("task", _id);
-      // await addImage(body);
-      // setIsGetImages(true);
+      setIsGetImages(true);
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    let timer;
+    if (isSuccess) {
+      setIsUploadIsSuccess(isSuccess);
+      timer = setTimeout(() => {
+        setIsUploadIsSuccess(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [isSuccess]);
+
+  useEffect(() => {
+    let timer;
+    if (!!fileRejections.length) {
+      setIsError(true);
+      timer = setTimeout(() => {
+        setIsError(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [!!fileRejections.length]);
+
   return (
     <div className="image__uploadBox" {...getRootProps()}>
       <input {...getInputProps()} />
-      <p className="image__uploadBox__title">You can drop your images here</p>
-      {acceptedFiles.map((file) => (
-        <div key={file.name}>
-          <span>{file.name}</span>
+      {isError ? (
+        <>
+          <p className="image__loadingBoxTitle">Error!</p>
+          <p className="image__loadingBoxTitle">
+            You can upload 4 files, no larger than 4mb!
+          </p>
+        </>
+      ) : isUploadSuccess ? (
+        <p className="image__uploadBoxSmall__title">Upload successful</p>
+      ) : isLoading ? (
+        <div className="image__loadingWrapper">
+          <p className="image__loadingBoxTitle">...Uploading...</p>
+          {acceptedFiles.map((file) => (
+            <div className="image__loadingBox" key={file.name}>
+              <img
+                className="image__loadingBox__tempThumbs"
+                alt={file.name}
+                src={URL.createObjectURL(file)}
+                onLoad={() => {
+                  URL.revokeObjectURL(file);
+                }}
+              />
+            </div>
+          ))}
         </div>
-      ))}
-      {isLoading && <p>...Loading...</p>}
+      ) : (
+        <p className="image__uploadBoxSmall__title">
+          You can drop your images here
+        </p>
+      )}
     </div>
   );
 };
