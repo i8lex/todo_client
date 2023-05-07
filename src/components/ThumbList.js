@@ -17,10 +17,10 @@ export const ThumbList = ({ _id, images }) => {
   const { modalThumbsNeedRefetch } = useSelector((state) => state.image);
 
   useEffect(() => {
-    if (isGetImages && !!images.length) {
+    if (isGetImages && images.length) {
       refetch();
     }
-  }, [!!images.length, isGetImages, refetch]);
+  }, [images.length, isGetImages, refetch]);
 
   useEffect(() => {
     if (modalThumbsNeedRefetch) {
@@ -44,8 +44,8 @@ export const ThumbList = ({ _id, images }) => {
     console.log(files);
   };
 
-  console.log(!isGetImages);
-  console.log(!images.length);
+  // console.log(!isGetImages);
+  // console.log(!images.length);
 
   return (
     <>
@@ -91,6 +91,7 @@ export const ThumbList = ({ _id, images }) => {
         </ul>
       )}
       <ModalThumbsList
+        images={images}
         data={data}
         isThumbsOpen={isThumbsOpen}
         modalThumbsHandler={modalThumbsHandler}

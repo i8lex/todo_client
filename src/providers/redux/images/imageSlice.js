@@ -9,6 +9,7 @@ const initialState = {
   },
   thumbsNeedRefetch: false,
   modalThumbsNeedRefetch: false,
+  checkedImages: [],
 };
 
 const imageSlice = createSlice({
@@ -24,9 +25,31 @@ const imageSlice = createSlice({
     setImage: (state, action) => {
       state.image = action.payload;
     },
+    setCheckedImages: (state, action) => {
+      const { imageId, isChecked } = action.payload;
+
+      if (isChecked) {
+        state.checkedImages = [...state.checkedImages, imageId];
+      } else {
+        state.checkedImages = state.checkedImages.filter(
+          (id) => id !== imageId
+        );
+      }
+    },
+    clearCheckedImages: (state) => {
+      return {
+        ...state,
+        checkedImages: [],
+      };
+    },
   },
 });
 
-export const { setThumbsNeedRefetch, setModalThumbsNeedRefetch, setImage } =
-  imageSlice.actions;
+export const {
+  setThumbsNeedRefetch,
+  setModalThumbsNeedRefetch,
+  setImage,
+  setCheckedImages,
+  clearCheckedImages,
+} = imageSlice.actions;
 export default imageSlice.reducer;

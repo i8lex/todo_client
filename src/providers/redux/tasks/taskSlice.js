@@ -16,8 +16,11 @@ const tasksSlice = createSlice({
         }
       }
     },
+    clearTasks: (state) => {
+      return [];
+    },
   },
 });
 
-export const { toggleTask } = tasksSlice.actions;
+export const { toggleTask, clearTasks } = tasksSlice.actions;
 export default tasksSlice.reducer;

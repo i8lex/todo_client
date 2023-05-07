@@ -1,7 +1,7 @@
 import React from "react";
 import { format, parseISO } from "date-fns";
 import { Timer } from "./Timer";
-import Checkbox from "./Checkbox";
+import TasksCheckbox from "./TasksCheckbox";
 // import { useGetThumbsQuery } from "../providers/redux/images/imageApi";
 import { ThumbList } from "./ThumbList";
 
@@ -91,7 +91,7 @@ export const TasksList = ({
               <></>
             </button>
 
-            <Checkbox taskId={_id} />
+            <TasksCheckbox taskId={_id} />
           </div>
         </div>
         <ThumbList _id={_id} images={images} />

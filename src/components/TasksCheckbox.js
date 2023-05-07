@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleTask } from "../providers/redux/tasks/taskSlice";
 
-const Checkbox = ({ taskId }) => {
+const TasksCheckbox = ({ taskId }) => {
   const dispatch = useDispatch();
   const [checkBoxStyle, setCheckBoxStyle] = useState("tasks__checkBox");
   const handleCheckboxChange = (event) => {
@@ -24,4 +24,4 @@ const Checkbox = ({ taskId }) => {
   );
 };
 
-export default Checkbox;
+export default TasksCheckbox;

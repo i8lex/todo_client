@@ -11,6 +11,8 @@ import { ModalDeleteConfirm } from "../components/ModalDeleteConfirm";
 import { form } from "../constants/form";
 import { ModalEditProject } from "../components/ModalEditProject";
 import { TasksList } from "../components/TasksList";
+import { useSelector, useDispatch } from "react-redux";
+import { clearTasks } from "../providers/redux/tasks/taskSlice";
 
 export const TasksPage = () => {
   const { data = [], isLoading } = useGetTasksQuery();
@@ -21,6 +23,9 @@ export const TasksPage = () => {
     isOpen: false,
     title: "",
   });
+  const dispatch = useDispatch();
+  const checkedTasks = useSelector((state) => state.tasks);
+
   const [editModal, setEditModal] = useState({
     isOpen: false,
     title: "",
@@ -59,10 +64,28 @@ export const TasksPage = () => {
                   label="Description"
                   required
                 />
-
-                <button className="tasks__button" type="submit">
-                  Create
-                </button>
+                <div className="tasks__buttonBox">
+                  <button className="tasks__buttonCreate" type="submit">
+                    Create
+                  </button>
+                  {!!checkedTasks.length && (
+                    <button
+                      className="tasks__buttonDelete"
+                      type="button"
+                      onClick={() =>
+                        setDeleteConfirmModal({
+                          isOpen: true,
+                          handleConfirm: async () => {
+                            await deleteTask(`?ids=${checkedTasks}`);
+                            dispatch(clearTasks());
+                          },
+                        })
+                      }
+                    >
+                      Delete checked
+                    </button>
+                  )}
+                </div>
               </Form>
             </Formik>
           </div>
@@ -75,7 +98,6 @@ export const TasksPage = () => {
                 if (!images) {
                   images = [];
                 }
-                // console.log(images);
                 return (
                   <TasksList
                     key={_id}
