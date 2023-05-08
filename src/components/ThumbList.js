@@ -6,6 +6,7 @@ import { ImageUploader } from "./ImageUploader";
 import {
   setImage,
   setModalThumbsNeedRefetch,
+  setThumbsNeedRefetch,
 } from "../providers/redux/images/imageSlice";
 
 export const ThumbList = ({ _id, images }) => {
@@ -17,10 +18,10 @@ export const ThumbList = ({ _id, images }) => {
   const { modalThumbsNeedRefetch } = useSelector((state) => state.image);
 
   useEffect(() => {
-    if (isGetImages && images.length) {
+    if (isGetImages && !!images.length) {
       refetch();
     }
-  }, [images.length, isGetImages, refetch]);
+  }, [images, refetch]);
 
   useEffect(() => {
     if (modalThumbsNeedRefetch) {
@@ -40,12 +41,11 @@ export const ThumbList = ({ _id, images }) => {
   };
 
   const handleFileSelect = (files) => {
-    // Handle the selected files
     console.log(files);
   };
 
-  // console.log(!isGetImages);
-  // console.log(!images.length);
+  console.log(!isGetImages);
+  console.log(!images.length);
 
   return (
     <>
@@ -95,7 +95,6 @@ export const ThumbList = ({ _id, images }) => {
         data={data}
         isThumbsOpen={isThumbsOpen}
         modalThumbsHandler={modalThumbsHandler}
-        refetch={refetch}
         setIsGetImages={setIsGetImages}
         _id={_id}
       />

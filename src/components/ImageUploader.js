@@ -9,18 +9,23 @@ export const ImageUploader = ({ _id, setIsGetImages }) => {
   const [isError, setIsError] = useState(false);
 
   const dispatch = useDispatch();
-  const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
-    useDropzone({
-      accept: {
-        "image/jpeg": [".jpg", ".jpeg"],
-        "image/png": [".png"],
-      },
-      maxFiles: 4,
-      maxSize: 4 * 1024 * 1024,
-      onDrop: (acceptedFiles) => {
-        uploadImages(acceptedFiles);
-      },
-    });
+  const {
+    isDragAccept,
+    acceptedFiles,
+    fileRejections,
+    getRootProps,
+    getInputProps,
+  } = useDropzone({
+    accept: {
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
+    },
+    maxFiles: 4,
+    maxSize: 4 * 1024 * 1024,
+    onDrop: (acceptedFiles) => {
+      uploadImages(acceptedFiles);
+    },
+  });
 
   const [addImage, { isLoading, isSuccess }] = useAddImageMutation({
     onError: (error) => {
@@ -38,17 +43,26 @@ export const ImageUploader = ({ _id, setIsGetImages }) => {
 
       body.append("task", _id);
 
-      await addImage(body);
+      console.log(files);
+      console.log(acceptedFiles);
+      console.log(body);
 
-      dispatch(setModalThumbsNeedRefetch(true));
-      // if (!fileRejections.length) {
-      //   setIsGetImages(true);
-      // }
-      setIsGetImages(true);
+      if (!fileRejections.length && !!files.length) {
+        await addImage(body);
+        dispatch(setModalThumbsNeedRefetch(true));
+        setIsGetImages(true);
+      }
+
+      // setIsGetImages(true);
     } catch (error) {
       console.log(error);
     }
   };
+
+  // if (!fileRejections.length) {
+  //   setIsGetImages(false);
+  //   console.log("OK");
+  // }
 
   useEffect(() => {
     let timer;
@@ -58,6 +72,7 @@ export const ImageUploader = ({ _id, setIsGetImages }) => {
         setIsUploadIsSuccess(false);
       }, 3000);
     }
+
     return () => clearTimeout(timer);
   }, [isSuccess]);
 
@@ -65,6 +80,7 @@ export const ImageUploader = ({ _id, setIsGetImages }) => {
     let timer;
     if (!!fileRejections.length) {
       setIsError(true);
+      setIsGetImages(false);
       timer = setTimeout(() => {
         setIsError(false);
       }, 5000);

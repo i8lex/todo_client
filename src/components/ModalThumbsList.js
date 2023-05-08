@@ -36,6 +36,7 @@ export const ModalThumbsList = ({
   const { checkedImages } = useSelector((state) => state.image);
   const [pathTask] = usePathTaskMutation();
   const buttonModifyHandle = () => {
+    isButtonModifyActive && dispatch(clearCheckedImages());
     setIsButtonModifyActive(!isButtonModifyActive);
   };
 
@@ -47,15 +48,13 @@ export const ModalThumbsList = ({
     const filteredImages = imagesIds.filter(
       (item) => !checkedImages.includes(item)
     );
-    console.log(filteredImages);
     await pathTask({ id: taskId, body: { images: filteredImages } });
   };
 
   useEffect(() => {
     if (isButtonModifyActive) {
       setButtonModifyClassName("image__modifyActive");
-    }
-    if (!isButtonModifyActive) {
+    } else {
       setButtonModifyClassName("image__modify");
     }
   }, [isButtonModifyActive]);
@@ -67,6 +66,7 @@ export const ModalThumbsList = ({
         dispatch(setImage({}));
         modalThumbsHandler();
         dispatch(clearCheckedImages());
+        setIsGetImages(false);
         setIsButtonModifyActive(false);
       }}
       style={{
@@ -126,6 +126,7 @@ export const ModalThumbsList = ({
             dispatch(setImage({}));
             modalThumbsHandler();
             dispatch(clearCheckedImages());
+            setIsGetImages(false);
             setIsButtonModifyActive(false);
           }}
         >

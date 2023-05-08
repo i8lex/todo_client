@@ -631,12 +631,8 @@
   cursor: copy;
 }
 .image__loadingBoxTitle {
-  left: 50px;
-  top: 50px;
-  transform: translate(-27%, 100%);
-  position: absolute;
   font-family: "Roboto", sans-serif;
-  font-size: 2rem;
+  font-size: 1.1rem;
   line-height: 1.8rem;
   text-align: center;
   margin-bottom: 10px;
